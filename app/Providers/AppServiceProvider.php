@@ -6,6 +6,8 @@ use App\Domain\AI\Contracts\AiProviderInterface;
 use App\Domain\AI\Observers\UserCreditObserver;
 use App\Domain\AI\Providers\OpenAiProvider;
 use App\Domain\Job\Models\JobDescription;
+use App\Domain\Payment\Contracts\PaymentGatewayInterface;
+use App\Domain\Payment\Gateways\MercadoPagoGateway;
 use App\Domain\Resume\Models\Resume;
 use App\Models\User;
 use App\Policies\JobDescriptionPolicy;
@@ -26,6 +28,15 @@ class AppServiceProvider extends ServiceProvider
             return match ($provider) {
                 'openai' => new OpenAiProvider(config('ai.providers.openai')),
                 default => throw new \InvalidArgumentException("Provedor de IA não suportado: {$provider}"),
+            };
+        });
+
+        $this->app->bind(PaymentGatewayInterface::class, function () {
+            $gateway = config('payment.gateway');
+
+            return match ($gateway) {
+                'mercadopago' => new MercadoPagoGateway(config('payment.gateways.mercadopago')),
+                default => throw new \InvalidArgumentException("Gateway de pagamento não suportado: {$gateway}"),
             };
         });
     }
