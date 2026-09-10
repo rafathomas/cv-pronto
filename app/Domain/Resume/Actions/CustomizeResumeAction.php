@@ -4,6 +4,7 @@ namespace App\Domain\Resume\Actions;
 
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\Services\AiUsageService;
+use App\Domain\Analytics\Services\AnalyticsService;
 use App\Domain\Job\Models\JobDescription;
 use App\Domain\Resume\Models\CustomizedResume;
 use App\Domain\Resume\Models\Resume;
@@ -11,13 +12,16 @@ use App\Models\User;
 
 class CustomizeResumeAction
 {
-    public function __construct(private readonly AiUsageService $usageService) {}
+    public function __construct(
+        private readonly AiUsageService $usageService,
+        private readonly AnalyticsService $analytics,
+    ) {}
 
     public function handle(User $user, Resume $resume, JobDescription $jobDescription): CustomizedResume
     {
         $result = $this->usageService->customizeResume($user, ResumeContextData::fromModel($resume), $jobDescription->raw_text);
 
-        return CustomizedResume::create([
+        $customized = CustomizedResume::create([
             'user_id' => $user->id,
             'resume_id' => $resume->id,
             'job_description_id' => $jobDescription->id,
@@ -26,5 +30,9 @@ class CustomizeResumeAction
             'highlighted_skills' => $result->highlightedSkills,
             'notes' => $result->notes,
         ]);
+
+        $this->analytics->track('resume_customization', $user);
+
+        return $customized;
     }
 }

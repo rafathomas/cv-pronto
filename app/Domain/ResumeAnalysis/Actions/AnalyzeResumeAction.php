@@ -4,13 +4,17 @@ namespace App\Domain\ResumeAnalysis\Actions;
 
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\Services\AiUsageService;
+use App\Domain\Analytics\Services\AnalyticsService;
 use App\Domain\Resume\Models\Resume;
 use App\Domain\ResumeAnalysis\Models\ResumeAnalysis;
 use App\Models\User;
 
 class AnalyzeResumeAction
 {
-    public function __construct(private readonly AiUsageService $usageService) {}
+    public function __construct(
+        private readonly AiUsageService $usageService,
+        private readonly AnalyticsService $analytics,
+    ) {}
 
     public function handle(User $user, Resume $resume): ResumeAnalysis
     {
@@ -27,6 +31,8 @@ class AnalyzeResumeAction
         ]);
 
         $resume->update(['latest_score' => $result->score]);
+
+        $this->analytics->track('resume_analysis', $user, ['score' => $result->score]);
 
         return $analysis;
     }

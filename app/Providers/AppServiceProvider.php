@@ -12,7 +12,10 @@ use App\Domain\Resume\Models\Resume;
 use App\Models\User;
 use App\Policies\JobDescriptionPolicy;
 use App\Policies\ResumePolicy;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Resume::class, ResumePolicy::class);
         Gate::policy(JobDescription::class, JobDescriptionPolicy::class);
+
+        Gate::define('admin', fn (User $user) => $user->is_admin);
+
+        RateLimiter::for('ai', fn (Request $request) => Limit::perMinute(30)->by($request->user()?->id ?: $request->ip()));
 
         User::observe(UserCreditObserver::class);
     }

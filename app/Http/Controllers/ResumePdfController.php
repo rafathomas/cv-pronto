@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Analytics\Services\AnalyticsService;
 use App\Domain\Resume\Enums\ResumeTemplate;
 use App\Domain\Resume\Models\CustomizedResume;
 use App\Domain\Resume\Models\Resume;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResumePdfController extends Controller
 {
-    public function __invoke(Request $request, Resume $resume, ResumePdfService $service): Response
+    public function __invoke(Request $request, Resume $resume, ResumePdfService $service, AnalyticsService $analytics): Response
     {
         Gate::authorize('view', $resume);
 
@@ -27,6 +28,10 @@ class ResumePdfController extends Controller
         }
 
         $pdf = $service->render($resume, $template, $customized);
+
+        if (! $request->boolean('inline')) {
+            $analytics->track('pdf_generated', $request->user(), ['template' => $template->value]);
+        }
 
         return $request->boolean('inline')
             ? $pdf->stream($service->filename($resume))

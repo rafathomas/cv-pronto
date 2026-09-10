@@ -2,6 +2,7 @@
 
 namespace App\Domain\Subscription\Services;
 
+use App\Domain\Analytics\Services\AnalyticsService;
 use App\Domain\Payment\Contracts\PaymentGatewayInterface;
 use App\Domain\Payment\DTOs\CheckoutResult;
 use App\Domain\Payment\DTOs\WebhookEvent;
@@ -14,7 +15,10 @@ use Illuminate\Http\Request;
 
 class SubscriptionService
 {
-    public function __construct(private readonly PaymentGatewayInterface $gateway) {}
+    public function __construct(
+        private readonly PaymentGatewayInterface $gateway,
+        private readonly AnalyticsService $analytics,
+    ) {}
 
     public function currentPlan(User $user): Plan
     {
@@ -38,6 +42,8 @@ class SubscriptionService
         $result = $this->gateway->createCheckout($user, $plan);
 
         $subscription->update(['gateway_subscription_id' => $result->gatewaySubscriptionId]);
+
+        $this->analytics->track('checkout_started', $user, ['plan' => $plan->key]);
 
         return $result;
     }
@@ -94,6 +100,8 @@ class SubscriptionService
             'status' => 'approved',
             'paid_at' => now(),
         ]);
+
+        $this->analytics->track('payment_completed', $subscription->user, ['plan' => $subscription->plan->key]);
     }
 
     private function resolveSubscription(WebhookEvent $event): ?Subscription
