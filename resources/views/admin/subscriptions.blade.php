@@ -14,6 +14,7 @@
                         <th class="px-5 py-3 font-medium">Usuário</th>
                         <th class="px-5 py-3 font-medium">Plano atual</th>
                         <th class="px-5 py-3 font-medium">Situação</th>
+                        <th class="px-5 py-3 font-medium">Expira em</th>
                         <th class="px-5 py-3 font-medium text-right">Ações</th>
                     </tr>
                 </thead>
@@ -44,6 +45,23 @@
                                     <span class="text-xs">—</span>
                                 @endif
                             </td>
+                            <td class="px-5 py-3 text-gray-500 dark:text-slate-400">
+                                @if (! $user->activeSubscription)
+                                    <span class="text-xs">—</span>
+                                @elseif (! $user->activeSubscription->current_period_end)
+                                    <span class="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-slate-400">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                        Sem expiração
+                                    </span>
+                                @elseif ($user->activeSubscription->current_period_end->isPast())
+                                    <span class="inline-flex items-center gap-1 text-xs font-medium text-red-500 dark:text-red-400">
+                                        Expirou {{ $user->activeSubscription->current_period_end->diffForHumans() }}
+                                    </span>
+                                @else
+                                    <span class="font-mono-admin text-xs">{{ $user->activeSubscription->current_period_end->format('d/m/Y') }}</span>
+                                    <span class="block text-[11px] text-gray-400 dark:text-slate-500">{{ $user->activeSubscription->current_period_end->diffForHumans() }}</span>
+                                @endif
+                            </td>
                             <td class="px-5 py-3">
                                 <div class="flex items-center justify-end gap-2">
                                     <form method="POST" action="{{ route('admin.subscriptions.update', $user) }}" class="flex items-center gap-2">
@@ -71,7 +89,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="4" class="px-5 py-8 text-center text-gray-500 dark:text-slate-500">Nenhum usuário cadastrado ainda.</td></tr>
+                        <tr><td colspan="5" class="px-5 py-8 text-center text-gray-500 dark:text-slate-500">Nenhum usuário cadastrado ainda.</td></tr>
                     @endforelse
                 </tbody>
             </table>

@@ -62,6 +62,35 @@ it('permite que um admin cancele a assinatura de um usuário', function () {
     expect($subscription->fresh()->status)->toBe(SubscriptionStatus::Cancelled);
 });
 
+it('mostra "sem expiração" para planos concedidos manualmente e a data para assinaturas com prazo', function () {
+    $admin = User::factory()->create(['is_admin' => true]);
+    $manualUser = User::factory()->create();
+    $paidUser = User::factory()->create();
+    $pro = Plan::where('key', 'pro')->firstOrFail();
+
+    Subscription::create([
+        'user_id' => $manualUser->id,
+        'plan_id' => $pro->id,
+        'gateway' => 'manual',
+        'status' => SubscriptionStatus::Active,
+        'current_period_end' => null,
+    ]);
+
+    Subscription::create([
+        'user_id' => $paidUser->id,
+        'plan_id' => $pro->id,
+        'gateway' => 'mercadopago',
+        'status' => SubscriptionStatus::Active,
+        'current_period_end' => now()->addDays(15),
+    ]);
+
+    $this->actingAs($admin)
+        ->get(route('admin.subscriptions.index'))
+        ->assertOk()
+        ->assertSee('Sem expiração')
+        ->assertSee(now()->addDays(15)->format('d/m/Y'));
+});
+
 it('impede um usuário comum de alterar o plano de outro usuário', function () {
     $user = User::factory()->create(['is_admin' => false]);
     $target = User::factory()->create();
