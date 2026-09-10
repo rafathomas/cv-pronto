@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Domain\AI\Contracts\AiProviderInterface;
 use App\Domain\AI\Observers\UserCreditObserver;
 use App\Domain\AI\Providers\OpenAiProvider;
+use App\Domain\Job\Models\JobDescription;
 use App\Domain\Resume\Models\Resume;
 use App\Models\User;
+use App\Policies\JobDescriptionPolicy;
 use App\Policies\ResumePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Resume::class, ResumePolicy::class);
+        Gate::policy(JobDescription::class, JobDescriptionPolicy::class);
 
         User::observe(UserCreditObserver::class);
     }

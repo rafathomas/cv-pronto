@@ -47,11 +47,15 @@
                     </span>
                 </a>
 
-                <div class="bg-white border border-gray-200 rounded-xl p-5 opacity-60">
+                <a href="{{ route('job.analyze') }}" wire:navigate
+                    class="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
                     <h4 class="font-semibold text-gray-900">Analisar uma vaga</h4>
                     <p class="text-sm text-gray-500 mt-1">Compare seu currículo com uma descrição de vaga.</p>
-                    <span class="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 mt-3">Em breve</span>
-                </div>
+                    <span class="inline-flex items-center gap-1 text-sm font-semibold text-accent-dark mt-3">
+                        Comparar
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                </a>
             </div>
 
         </div>
