@@ -10,11 +10,34 @@ use App\Domain\AI\DTOs\JobMatchResult;
 use App\Domain\AI\DTOs\ResumeAnalysisResult;
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\DTOs\ResumeCustomizationResult;
+use App\Domain\AI\DTOs\ResumeExtractionResult;
 use App\Domain\AI\DTOs\ResumeImprovementResult;
 
 class FakeAiProvider implements AiProviderInterface
 {
     public ?ResumeImprovementResult $improvementResult = null;
+
+    public ?ResumeExtractionResult $extractionResult = null;
+
+    public function extractResume(string $rawText): ResumeExtractionResult
+    {
+        return $this->extractionResult ?? new ResumeExtractionResult(
+            fullName: 'Rafael Souza',
+            email: null,
+            phone: null,
+            city: null,
+            state: null,
+            linkedinUrl: null,
+            githubUrl: null,
+            portfolioUrl: null,
+            professionalSummary: null,
+            experiences: [],
+            education: [],
+            courses: [],
+            skills: [],
+            languages: [],
+        );
+    }
 
     public function analyzeResume(ResumeContextData $resume): ResumeAnalysisResult
     {

@@ -8,31 +8,46 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <div class="bg-white border border-gray-200 rounded-xl p-6">
-                <h3 class="text-lg font-bold text-gray-900">
-                    Olá, {{ auth()->user()->name }}
-                </h3>
+            <div class="bg-white border border-gray-200 rounded-xl p-6 flex items-center justify-between flex-wrap gap-3">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900">
+                        Olá, {{ auth()->user()->name }}
+                    </h3>
 
-                @if ($resume)
-                    <p class="text-sm text-gray-500 mt-1">
-                        Currículo: <span class="font-medium text-gray-800">{{ $resume->title }}</span>
-                        · última atualização {{ $resume->updated_at->diffForHumans() }}
-                        @if ($resume->latest_score !== null)
-                            · nota <span class="font-semibold text-accent-dark">{{ $resume->latest_score }}/100</span>
-                        @endif
-                    </p>
-                @else
-                    <p class="text-sm text-gray-500 mt-1">Você ainda não criou um currículo.</p>
-                @endif
+                    @if ($resume)
+                        <p class="text-sm text-gray-500 mt-1">
+                            Currículo: <span class="font-medium text-gray-800">{{ $resume->title }}</span>
+                            · última atualização {{ $resume->updated_at->diffForHumans() }}
+                            @if ($resume->latest_score !== null)
+                                · nota <span class="font-semibold text-accent-dark">{{ $resume->latest_score }}/100</span>
+                            @endif
+                        </p>
+                    @else
+                        <p class="text-sm text-gray-500 mt-1">Você ainda não criou um currículo.</p>
+                    @endif
+                </div>
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-700 bg-gray-100 rounded-full px-3 py-1.5">
+                    {{ $creditsBalance }} {{ Str::plural('crédito', $creditsBalance) }} de IA disponíveis
+                </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <a href="{{ route('resume.builder', $resume) }}" wire:navigate
                     class="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
                     <h4 class="font-semibold text-gray-900">{{ $resume ? 'Editar currículo' : 'Criar currículo' }}</h4>
                     <p class="text-sm text-gray-500 mt-1">Preencha seus dados, seção por seção.</p>
                     <span class="inline-flex items-center gap-1 text-sm font-semibold text-accent-dark mt-3">
                         Começar
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </span>
+                </a>
+
+                <a href="{{ route('resume.import') }}" wire:navigate
+                    class="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition">
+                    <h4 class="font-semibold text-gray-900">Importar currículo</h4>
+                    <p class="text-sm text-gray-500 mt-1">Envie um PDF ou DOCX existente.</p>
+                    <span class="inline-flex items-center gap-1 text-sm font-semibold text-accent-dark mt-3">
+                        Importar
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></svg>
                     </span>
                 </a>

@@ -9,6 +9,7 @@ use App\Domain\AI\DTOs\JobMatchResult;
 use App\Domain\AI\DTOs\ResumeAnalysisResult;
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\DTOs\ResumeCustomizationResult;
+use App\Domain\AI\DTOs\ResumeExtractionResult;
 use App\Domain\AI\DTOs\ResumeImprovementResult;
 use App\Domain\AI\Enums\AiOperation;
 use App\Domain\AI\Exceptions\AiProviderException;
@@ -28,6 +29,11 @@ class AiUsageService
         private readonly AiProviderInterface $provider,
         private readonly AiCreditService $credits,
     ) {}
+
+    public function extractResume(User $user, string $rawText): ResumeExtractionResult
+    {
+        return $this->execute($user, AiOperation::ResumeExtraction, fn () => $this->provider->extractResume($rawText));
+    }
 
     public function analyzeResume(User $user, ResumeContextData $resume): ResumeAnalysisResult
     {

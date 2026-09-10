@@ -10,6 +10,7 @@ use App\Domain\AI\DTOs\JobMatchResult;
 use App\Domain\AI\DTOs\ResumeAnalysisResult;
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\DTOs\ResumeCustomizationResult;
+use App\Domain\AI\DTOs\ResumeExtractionResult;
 use App\Domain\AI\DTOs\ResumeImprovementResult;
 use App\Domain\AI\Exceptions\AiProviderException;
 use App\Domain\AI\Exceptions\InvalidAiResponseException;
@@ -22,6 +23,13 @@ class OpenAiProvider implements AiProviderInterface
     private ?AiUsageMeta $lastUsage = null;
 
     public function __construct(private readonly array $config) {}
+
+    public function extractResume(string $rawText): ResumeExtractionResult
+    {
+        return ResumeExtractionResult::fromArray($this->completeJson('resume/extract.txt', [
+            'raw_text' => $rawText,
+        ]));
+    }
 
     public function analyzeResume(ResumeContextData $resume): ResumeAnalysisResult
     {

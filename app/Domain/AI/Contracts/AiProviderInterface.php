@@ -9,6 +9,7 @@ use App\Domain\AI\DTOs\JobMatchResult;
 use App\Domain\AI\DTOs\ResumeAnalysisResult;
 use App\Domain\AI\DTOs\ResumeContextData;
 use App\Domain\AI\DTOs\ResumeCustomizationResult;
+use App\Domain\AI\DTOs\ResumeExtractionResult;
 use App\Domain\AI\DTOs\ResumeImprovementResult;
 
 /**
@@ -17,6 +18,8 @@ use App\Domain\AI\DTOs\ResumeImprovementResult;
  */
 interface AiProviderInterface
 {
+    public function extractResume(string $rawText): ResumeExtractionResult;
+
     public function analyzeResume(ResumeContextData $resume): ResumeAnalysisResult;
 
     public function improveResume(ResumeContextData $resume): ResumeImprovementResult;
