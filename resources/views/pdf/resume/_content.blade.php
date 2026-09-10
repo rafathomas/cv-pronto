@@ -25,13 +25,13 @@
         <h2 class="cv-section-title">Experiência</h2>
         @foreach ($resume->experiences as $experience)
             <div class="cv-entry">
-                <div class="cv-entry-row">
-                    <span class="cv-entry-title">{{ $experience->position }} · {{ $experience->company }}</span>
-                    <span class="cv-entry-date">
+                <table class="cv-entry-row"><tr>
+                    <td class="cv-entry-title">{{ $experience->position }} · {{ $experience->company }}</td>
+                    <td class="cv-entry-date">
                         {{ $experience->start_date->format('m/Y') }} –
                         {{ $experience->is_current ? 'Atual' : ($experience->end_date?->format('m/Y') ?? '') }}
-                    </span>
-                </div>
+                    </td>
+                </tr></table>
                 @php $description = $customizedExperiences[$experience->id] ?? $experience->description; @endphp
                 @if ($description)
                     <p class="cv-text">{{ $description }}</p>
@@ -46,12 +46,14 @@
         <h2 class="cv-section-title">Formação</h2>
         @foreach ($resume->education as $education)
             <div class="cv-entry">
-                <div class="cv-entry-row">
-                    <span class="cv-entry-title">{{ $education->course }} · {{ $education->institution }}</span>
-                    @if ($education->start_date || $education->end_date)
-                        <span class="cv-entry-date">{{ $education->start_date?->format('Y') }} – {{ $education->end_date?->format('Y') ?? 'Atual' }}</span>
-                    @endif
-                </div>
+                <table class="cv-entry-row"><tr>
+                    <td class="cv-entry-title">{{ $education->course }} · {{ $education->institution }}</td>
+                    <td class="cv-entry-date">
+                        @if ($education->start_date || $education->end_date)
+                            {{ $education->start_date?->format('Y') }} – {{ $education->end_date?->format('Y') ?? 'Atual' }}
+                        @endif
+                    </td>
+                </tr></table>
                 @if ($education->degree)
                     <p class="cv-text">{{ $education->degree }}</p>
                 @endif

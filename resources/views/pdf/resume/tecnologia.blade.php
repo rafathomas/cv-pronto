@@ -10,11 +10,12 @@
         .cv-contact { font-size: 9px; color: #94a3b8; margin: 0; }
         .cv-section { margin-bottom: 12px; }
         .cv-section-title { font-size: 10px; font-weight: bold; color: #16A34A; margin: 0 0 6px; }
-        .cv-section-title:before { content: "> "; }
+        .cv-section-title:before { content: "\25C6 "; color: #4ade80; }
         .cv-entry { margin-bottom: 8px; }
-        .cv-entry-row { width: 100%; overflow: hidden; font-weight: bold; font-size: 10.5px; }
-        .cv-entry-title { float: left; }
-        .cv-entry-date { float: right; font-weight: normal; color: #64748b; font-size: 9px; }
+        table.cv-entry-row { width: 100%; border-collapse: collapse; font-weight: bold; font-size: 10.5px; }
+        table.cv-entry-row td { padding: 0; vertical-align: baseline; }
+        .cv-entry-title { text-align: left; }
+        .cv-entry-date { text-align: right; white-space: nowrap; font-weight: normal; color: #64748b; font-size: 9px; }
         .cv-text { margin: 3px 0 0; font-size: 10px; color: #334155; }
     </style>
 </head>

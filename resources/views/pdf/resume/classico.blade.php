@@ -10,10 +10,12 @@
         .cv-contact { font-size: 9.5px; color: #555; margin: 0; }
         .cv-section { margin-bottom: 12px; }
         .cv-section-title { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: #1E3A5F; border-bottom: 1px solid #ccc; padding-bottom: 3px; margin: 0 0 6px; }
+        .cv-section-title:before { content: "\25A0 "; color: #16A34A; font-size: 8px; }
         .cv-entry { margin-bottom: 8px; }
-        .cv-entry-row { width: 100%; overflow: hidden; font-weight: bold; font-size: 11px; }
-        .cv-entry-title { float: left; }
-        .cv-entry-date { float: right; font-weight: normal; color: #666; font-size: 9.5px; }
+        table.cv-entry-row { width: 100%; border-collapse: collapse; font-weight: bold; font-size: 11px; }
+        table.cv-entry-row td { padding: 0; vertical-align: baseline; }
+        .cv-entry-title { text-align: left; }
+        .cv-entry-date { text-align: right; white-space: nowrap; font-weight: normal; color: #666; font-size: 9.5px; }
         .cv-text { margin: 3px 0 0; font-size: 10.5px; color: #333; }
     </style>
 </head>

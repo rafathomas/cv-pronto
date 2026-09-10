@@ -11,9 +11,10 @@
         .cv-section { margin-bottom: 14px; }
         .cv-section-title { font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin: 0 0 7px; }
         .cv-entry { margin-bottom: 9px; }
-        .cv-entry-row { width: 100%; overflow: hidden; font-weight: normal; font-size: 10.5px; }
-        .cv-entry-title { float: left; font-weight: bold; }
-        .cv-entry-date { float: right; color: #999; font-size: 9px; }
+        table.cv-entry-row { width: 100%; border-collapse: collapse; font-weight: normal; font-size: 10.5px; }
+        table.cv-entry-row td { padding: 0; vertical-align: baseline; }
+        .cv-entry-title { text-align: left; font-weight: bold; }
+        .cv-entry-date { text-align: right; white-space: nowrap; color: #999; font-size: 9px; }
         .cv-text { margin: 2px 0 0; font-size: 10px; color: #444; }
     </style>
 </head>
