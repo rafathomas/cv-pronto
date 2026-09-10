@@ -36,6 +36,9 @@ new class extends Component
                     <x-nav-link :href="route('resume.builder')" :active="request()->routeIs('resume.builder')" wire:navigate>
                         {{ __('Meu currículo') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('resume.analyze')" :active="request()->routeIs('resume.analyze')" wire:navigate>
+                        {{ __('Analisar currículo') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -89,6 +92,9 @@ new class extends Component
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('resume.builder')" :active="request()->routeIs('resume.builder')" wire:navigate>
                 {{ __('Meu currículo') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('resume.analyze')" :active="request()->routeIs('resume.analyze')" wire:navigate>
+                {{ __('Analisar currículo') }}
             </x-responsive-nav-link>
         </div>
 

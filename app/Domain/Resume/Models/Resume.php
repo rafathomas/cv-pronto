@@ -3,12 +3,14 @@
 namespace App\Domain\Resume\Models;
 
 use App\Domain\Resume\Enums\ResumeSource;
+use App\Domain\ResumeAnalysis\Models\ResumeAnalysis;
 use App\Models\User;
 use Database\Factories\ResumeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Resume extends Model
@@ -75,5 +77,15 @@ class Resume extends Model
     public function languages(): HasMany
     {
         return $this->hasMany(ResumeLanguage::class)->orderBy('sort_order');
+    }
+
+    public function analyses(): HasMany
+    {
+        return $this->hasMany(ResumeAnalysis::class)->latest('created_at');
+    }
+
+    public function latestAnalysis(): HasOne
+    {
+        return $this->hasOne(ResumeAnalysis::class)->latestOfMany('created_at');
     }
 }

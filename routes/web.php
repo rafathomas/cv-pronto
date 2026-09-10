@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Livewire\Resume\Analyzer as ResumeAnalyzer;
 use App\Livewire\Resume\Builder as ResumeBuilder;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ Route::view('profile', 'profile')
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('curriculo/{resume?}', ResumeBuilder::class)->name('resume.builder');
+    Route::get('analisar-curriculo/{resume?}', ResumeAnalyzer::class)->name('resume.analyze');
 });
 
 require __DIR__.'/auth.php';
