@@ -80,8 +80,10 @@
                                         <form method="POST" action="{{ route('admin.subscriptions.destroy', $user) }}" onsubmit="return confirm('Cancelar a assinatura de {{ $user->name }}?')">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="text-xs font-semibold text-red-500 hover:text-red-600 dark:hover:text-red-400 px-2 py-1.5">
-                                                Cancelar
+                                            <button type="submit"
+                                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-red-500 dark:text-red-400 border border-red-200 dark:border-red-400/30 hover:bg-red-50 dark:hover:bg-red-400/10 rounded-lg px-3 py-1.5 transition">
+                                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M6 18 18 6"/></svg>
+                                                Cancelar assinatura
                                             </button>
                                         </form>
                                     @endif
