@@ -15,6 +15,6 @@ it('permite que um administrador acesse o painel', function () {
     $this->actingAs($admin)
         ->get(route('admin.dashboard'))
         ->assertOk()
-        ->assertSee('Painel Administrativo')
+        ->assertSee('Visão geral')
         ->assertSee($other->email);
 });
