@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Resume extends Model
 {
@@ -36,6 +37,7 @@ class Resume extends Model
         'professional_summary',
         'template',
         'accent_color',
+        'photo_path',
         'latest_score',
         'imported_at',
         'source',
@@ -48,6 +50,15 @@ class Resume extends Model
             'imported_at' => 'datetime',
             'latest_score' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::forceDeleted(function (Resume $resume) {
+            if ($resume->photo_path) {
+                Storage::disk('resumes')->delete($resume->photo_path);
+            }
+        });
     }
 
     public function user(): BelongsTo
@@ -88,5 +99,26 @@ class Resume extends Model
     public function latestAnalysis(): HasOne
     {
         return $this->hasOne(ResumeAnalysis::class)->latestOfMany('created_at');
+    }
+
+    public function hasPhoto(): bool
+    {
+        return (bool) $this->photo_path && Storage::disk('resumes')->exists($this->photo_path);
+    }
+
+    /**
+     * A foto como data URI base64, para embutir diretamente no PDF gerado
+     * pelo dompdf (evita depender de fetch remoto/URL assinada dentro do PDF).
+     */
+    public function photoDataUri(): ?string
+    {
+        if (! $this->photo_path || ! Storage::disk('resumes')->exists($this->photo_path)) {
+            return null;
+        }
+
+        $contents = Storage::disk('resumes')->get($this->photo_path);
+        $mime = Storage::disk('resumes')->mimeType($this->photo_path) ?: 'image/jpeg';
+
+        return 'data:'.$mime.';base64,'.base64_encode($contents);
     }
 }

@@ -21,12 +21,19 @@ use App\Domain\Resume\Services\ResumeService;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 class Builder extends Component
 {
+    use WithFileUploads;
+
     public Resume $resume;
 
     public string $activeTab = 'dados';
+
+    /** @var TemporaryUploadedFile|null */
+    public $photo = null;
 
     // Dados pessoais
     #[Validate('required|string|max:150')]
@@ -215,6 +222,24 @@ class Builder extends Component
         $service->updateProfessionalSummary($this->resume, $this->professionalSummary ?? '');
 
         $this->dispatch('resume-saved');
+    }
+
+    public function updatedPhoto(ResumeService $service): void
+    {
+        $this->validate(['photo' => 'image|max:3072']); // 3MB
+
+        $service->updatePhoto($this->resume, $this->photo);
+
+        $this->photo = null;
+        $this->resume->refresh();
+        $this->dispatch('resume-saved');
+    }
+
+    public function removePhoto(ResumeService $service): void
+    {
+        $service->removePhoto($this->resume);
+
+        $this->resume->refresh();
     }
 
     public function addExperience(ResumeService $service): void

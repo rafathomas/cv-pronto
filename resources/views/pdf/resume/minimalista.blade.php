@@ -5,7 +5,11 @@
     <style>
         @page { margin: 32px 40px; }
         body { font-family: 'DejaVu Sans', sans-serif; color: #222; font-size: 10.5px; line-height: 1.6; }
-        .cv-header { margin-bottom: 18px; }
+        .cv-header, table.cv-header-table { margin-bottom: 18px; width: 100%; }
+        .cv-header-text { vertical-align: middle; }
+        .cv-header-photo { width: 56px; vertical-align: middle; text-align: right; }
+        .cv-photo-frame { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: inline-block; }
+        .cv-photo { width: 50px; height: 50px; }
         .cv-name { font-size: 19px; font-weight: normal; color: #111; margin: 0 0 5px; padding-bottom: 8px; border-bottom: 2px solid {{ $accentColor }}; display: inline-block; }
         .cv-contact { font-size: 9px; color: #888; margin: 0; }
         .cv-section { margin-bottom: 14px; }

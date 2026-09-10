@@ -12,6 +12,8 @@
         td.cv-main { width: 66%; background: #fff; padding: 30px 28px; vertical-align: top; }
 
         .cv-avatar { width: 58px; height: 58px; border-radius: 50%; background: {{ $accentColor }}; color: #fff; font-size: 22px; font-weight: bold; text-align: center; line-height: 58px; margin-bottom: 14px; }
+        .cv-avatar-frame { width: 58px; height: 58px; border-radius: 50%; overflow: hidden; margin-bottom: 14px; }
+        .cv-avatar-photo { width: 58px; height: 58px; }
         .cv-sidebar h1 { font-size: 17px; font-weight: bold; color: #fff; margin: 0 0 3px; line-height: 1.25; }
         .cv-sidebar .cv-role { font-size: 9.5px; color: #9fc3e0; margin: 0 0 18px; text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -48,7 +50,11 @@
     <table class="cv-shell">
         <tr>
             <td class="cv-sidebar">
-                <div class="cv-avatar">{{ mb_substr($resume->full_name, 0, 1) }}</div>
+                @if ($resume->hasPhoto())
+                    <div class="cv-avatar-frame"><img src="{{ $resume->photoDataUri() }}" class="cv-avatar-photo" alt=""></div>
+                @else
+                    <div class="cv-avatar">{{ mb_substr($resume->full_name, 0, 1) }}</div>
+                @endif
                 <h1>{{ $resume->full_name }}</h1>
                 @if ($resume->experiences->isNotEmpty())
                     <p class="cv-role">{{ $resume->experiences->first()->position }}</p>

@@ -73,6 +73,38 @@
         <div>
             <h2 class="text-lg font-bold text-gray-900 mb-1">Vamos começar pelo básico</h2>
             <p class="text-sm text-gray-500 mb-5">Essas informações aparecem no topo do seu currículo.</p>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-6 mb-5 flex items-center gap-5">
+                <div class="relative shrink-0">
+                    @if ($photo && $photo->isPreviewable())
+                        <img src="{{ $photo->temporaryUrl() }}" class="w-20 h-20 rounded-full object-cover border border-gray-200" alt="Prévia da foto">
+                    @elseif ($resume->hasPhoto())
+                        <img src="{{ $resume->photoDataUri() }}" class="w-20 h-20 rounded-full object-cover border border-gray-200" alt="Sua foto">
+                    @else
+                        <div class="w-20 h-20 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-300">
+                            <svg class="w-9 h-9" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 21a8 8 0 1 0-16 0M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg>
+                        </div>
+                    @endif
+                    <div wire:loading wire:target="photo" class="absolute inset-0 rounded-full bg-white/70 flex items-center justify-center">
+                        <svg class="w-5 h-5 animate-spin text-accent" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-800">Foto de perfil (opcional)</p>
+                    <p class="text-xs text-gray-500 mt-0.5 mb-2">JPG ou PNG, até 3MB.</p>
+                    <div class="flex items-center gap-3">
+                        <label for="photo" class="cursor-pointer text-xs font-semibold text-white bg-brand hover:bg-brand-dark rounded-lg px-3 py-2 transition">
+                            {{ $resume->hasPhoto() ? 'Trocar foto' : 'Adicionar foto' }}
+                        </label>
+                        <input type="file" id="photo" wire:model="photo" accept="image/*" class="hidden">
+                        @if ($resume->hasPhoto())
+                            <button type="button" wire:click="removePhoto" class="text-xs font-semibold text-gray-500 hover:text-red-600">Remover</button>
+                        @endif
+                    </div>
+                    <x-input-error :messages="$errors->get('photo')" class="mt-1" />
+                </div>
+            </div>
+
             <form id="dados-form" wire:submit="continueFromDados" class="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="sm:col-span-2">

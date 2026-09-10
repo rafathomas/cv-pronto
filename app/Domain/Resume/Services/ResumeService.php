@@ -11,12 +11,44 @@ use App\Domain\Resume\Models\ResumeEducation;
 use App\Domain\Resume\Models\ResumeExperience;
 use App\Domain\Resume\Models\ResumeLanguage;
 use App\Domain\Resume\Models\ResumeSkill;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ResumeService
 {
     public function updatePersonalData(Resume $resume, ResumePersonalData $data): Resume
     {
         $resume->update($data->toArray());
+
+        return $resume;
+    }
+
+    public function updatePhoto(Resume $resume, UploadedFile $file): Resume
+    {
+        $previousPath = $resume->photo_path;
+
+        $path = $file->storeAs(
+            "photos/{$resume->id}",
+            Str::uuid().'.'.$file->extension(),
+            'resumes',
+        );
+
+        $resume->update(['photo_path' => $path]);
+
+        if ($previousPath) {
+            Storage::disk('resumes')->delete($previousPath);
+        }
+
+        return $resume;
+    }
+
+    public function removePhoto(Resume $resume): Resume
+    {
+        if ($resume->photo_path) {
+            Storage::disk('resumes')->delete($resume->photo_path);
+            $resume->update(['photo_path' => null]);
+        }
 
         return $resume;
     }

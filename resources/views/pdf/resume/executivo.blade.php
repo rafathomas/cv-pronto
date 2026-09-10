@@ -6,6 +6,11 @@
         @page { margin: 0; }
         body { font-family: 'DejaVu Sans', sans-serif; color: #1a1a1a; font-size: 11px; line-height: 1.5; margin: 0; }
         .cv-header { background: #1E3A5F; color: #fff; padding: 22px 36px; margin-bottom: 0; border-bottom: 4px solid {{ $accentColor }}; }
+        table.cv-header-table { background: #1E3A5F; margin-bottom: 0; border-bottom: 4px solid {{ $accentColor }}; width: 100%; }
+        .cv-header-text { vertical-align: middle; padding: 22px 0 22px 36px; }
+        .cv-header-photo { width: 64px; vertical-align: middle; text-align: right; padding: 22px 36px 22px 0; }
+        .cv-photo-frame { width: 58px; height: 58px; border-radius: 50%; overflow: hidden; display: inline-block; border: 2px solid rgba(255,255,255,0.4); }
+        .cv-photo { width: 54px; height: 54px; }
         .cv-name { font-size: 23px; font-weight: bold; margin: 0 0 4px; color: #fff; }
         .cv-contact { font-size: 9.5px; color: #cbd5e1; margin: 0; }
         .cv-section { margin: 0 36px 13px; padding-top: 13px; }

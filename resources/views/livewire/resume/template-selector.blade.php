@@ -29,6 +29,7 @@
     </div>
 
     {{-- Miniaturas dos templates --}}
+    @php $thumbPhoto = $resume->hasPhoto() ? $resume->photoDataUri() : null; @endphp
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
         @foreach ($templates as $template)
             <button type="button" wire:click="selectTemplate('{{ $template->value }}')"
@@ -39,8 +40,14 @@
                     @switch($template->value)
                         @case('classico')
                             <div class="h-full bg-white p-2 text-[4px] leading-none" style="border-bottom: 2px solid #1E3A5F;">
-                                <div class="h-1.5 w-3/5 rounded-sm mb-1" style="background:#1E3A5F"></div>
-                                <div class="h-0.5 w-4/5 rounded-sm bg-gray-300 mb-2"></div>
+                                <div class="flex items-start justify-between mb-1">
+                                    <div class="flex-1">
+                                        <div class="h-1.5 w-4/5 rounded-sm mb-1" style="background:#1E3A5F"></div>
+                                        <div class="h-0.5 w-3/5 rounded-sm bg-gray-300"></div>
+                                    </div>
+                                    <div class="w-4 h-4 rounded-full shrink-0 ml-1 bg-gray-200 bg-cover bg-center" @if($thumbPhoto) style="background-image:url('{{ $thumbPhoto }}')" @endif></div>
+                                </div>
+                                <div class="mb-1"></div>
                                 @for ($i = 0; $i < 3; $i++)
                                     <div class="flex items-center gap-0.5 mb-1">
                                         <span class="w-1 h-1 shrink-0" style="background: {{ $selectedColor }}"></span>
@@ -55,7 +62,7 @@
                         @case('moderno')
                             <div class="h-full bg-white flex overflow-hidden text-[4px] leading-none">
                                 <div class="w-2/5 h-full p-1.5" style="background:#1E3A5F">
-                                    <div class="w-3 h-3 rounded-full mb-1" style="background:{{ $selectedColor }}"></div>
+                                    <div class="w-3 h-3 rounded-full mb-1 bg-cover bg-center" style="background-color:{{ $selectedColor }}; @if($thumbPhoto) background-image:url('{{ $thumbPhoto }}') @endif"></div>
                                     <div class="h-1 w-4/5 rounded-sm bg-white mb-2"></div>
                                     @for ($i = 0; $i < 3; $i++)
                                         <div class="h-0.5 w-full rounded-sm mb-0.5" style="background:rgba(255,255,255,0.5)"></div>
@@ -85,8 +92,9 @@
 
                         @case('executivo')
                             <div class="h-full bg-white overflow-hidden text-[4px] leading-none">
-                                <div class="p-1.5" style="background:#1E3A5F; border-bottom:2px solid {{ $selectedColor }}">
+                                <div class="p-1.5 flex items-center justify-between" style="background:#1E3A5F; border-bottom:2px solid {{ $selectedColor }}">
                                     <div class="h-1.5 w-3/5 rounded-sm bg-white"></div>
+                                    <div class="w-4 h-4 rounded-full shrink-0 bg-cover bg-center" style="background-color:rgba(255,255,255,0.3); @if($thumbPhoto) background-image:url('{{ $thumbPhoto }}') @endif"></div>
                                 </div>
                                 <div class="p-1.5">
                                     @for ($i = 0; $i < 3; $i++)
@@ -100,8 +108,9 @@
 
                         @case('tecnologia')
                             <div class="h-full overflow-hidden text-[4px] leading-none" style="background:#f8fafc">
-                                <div class="p-1.5 m-1 rounded-sm" style="background:#0f172a">
+                                <div class="p-1.5 m-1 rounded-sm flex items-center justify-between" style="background:#0f172a">
                                     <div class="h-1.5 w-3/5 rounded-sm" style="background:{{ $selectedColor }}"></div>
+                                    <div class="w-3.5 h-3.5 rounded-full shrink-0 bg-cover bg-center" style="border:1px solid {{ $selectedColor }}; @if($thumbPhoto) background-image:url('{{ $thumbPhoto }}') @endif"></div>
                                 </div>
                                 <div class="p-1.5">
                                     @for ($i = 0; $i < 3; $i++)

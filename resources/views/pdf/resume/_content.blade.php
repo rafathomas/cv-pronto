@@ -1,17 +1,38 @@
 {{-- Conteúdo do currículo, compartilhado por todos os templates. --}}
-<div class="cv-header">
-    <h1 class="cv-name">{{ $resume->full_name }}</h1>
-    <p class="cv-contact">
-        {{ collect([
-            $resume->email,
-            $resume->phone,
-            trim(($resume->city ?? '').($resume->city && $resume->state ? ', ' : '').($resume->state ?? '')),
-            $resume->linkedin_url,
-            $resume->github_url,
-            $resume->portfolio_url,
-        ])->filter()->implode('   ·   ') }}
-    </p>
-</div>
+@if ($resume->hasPhoto())
+    <table class="cv-header-table"><tr>
+        <td class="cv-header-text">
+            <h1 class="cv-name">{{ $resume->full_name }}</h1>
+            <p class="cv-contact">
+                {{ collect([
+                    $resume->email,
+                    $resume->phone,
+                    trim(($resume->city ?? '').($resume->city && $resume->state ? ', ' : '').($resume->state ?? '')),
+                    $resume->linkedin_url,
+                    $resume->github_url,
+                    $resume->portfolio_url,
+                ])->filter()->implode('   ·   ') }}
+            </p>
+        </td>
+        <td class="cv-header-photo">
+            <div class="cv-photo-frame"><img src="{{ $resume->photoDataUri() }}" class="cv-photo" alt=""></div>
+        </td>
+    </tr></table>
+@else
+    <div class="cv-header">
+        <h1 class="cv-name">{{ $resume->full_name }}</h1>
+        <p class="cv-contact">
+            {{ collect([
+                $resume->email,
+                $resume->phone,
+                trim(($resume->city ?? '').($resume->city && $resume->state ? ', ' : '').($resume->state ?? '')),
+                $resume->linkedin_url,
+                $resume->github_url,
+                $resume->portfolio_url,
+            ])->filter()->implode('   ·   ') }}
+        </p>
+    </div>
+@endif
 
 @if ($summary = $customizedSummary ?? $resume->professional_summary)
     <div class="cv-section">
