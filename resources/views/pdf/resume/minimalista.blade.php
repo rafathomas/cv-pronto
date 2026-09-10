@@ -6,7 +6,7 @@
         @page { margin: 32px 40px; }
         body { font-family: 'DejaVu Sans', sans-serif; color: #222; font-size: 10.5px; line-height: 1.6; }
         .cv-header { margin-bottom: 18px; }
-        .cv-name { font-size: 19px; font-weight: normal; color: #111; margin: 0 0 3px; }
+        .cv-name { font-size: 19px; font-weight: normal; color: #111; margin: 0 0 5px; padding-bottom: 8px; border-bottom: 2px solid {{ $accentColor }}; display: inline-block; }
         .cv-contact { font-size: 9px; color: #888; margin: 0; }
         .cv-section { margin-bottom: 14px; }
         .cv-section-title { font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin: 0 0 7px; }

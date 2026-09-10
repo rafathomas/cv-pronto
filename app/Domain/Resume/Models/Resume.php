@@ -35,6 +35,7 @@ class Resume extends Model
         'portfolio_url',
         'professional_summary',
         'template',
+        'accent_color',
         'latest_score',
         'imported_at',
         'source',

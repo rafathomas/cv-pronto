@@ -11,7 +11,7 @@
         td.cv-sidebar { width: 34%; background: #1E3A5F; color: #fff; padding: 28px 20px; vertical-align: top; }
         td.cv-main { width: 66%; background: #fff; padding: 30px 28px; vertical-align: top; }
 
-        .cv-avatar { width: 58px; height: 58px; border-radius: 50%; background: #16A34A; color: #fff; font-size: 22px; font-weight: bold; text-align: center; line-height: 58px; margin-bottom: 14px; }
+        .cv-avatar { width: 58px; height: 58px; border-radius: 50%; background: {{ $accentColor }}; color: #fff; font-size: 22px; font-weight: bold; text-align: center; line-height: 58px; margin-bottom: 14px; }
         .cv-sidebar h1 { font-size: 17px; font-weight: bold; color: #fff; margin: 0 0 3px; line-height: 1.25; }
         .cv-sidebar .cv-role { font-size: 9.5px; color: #9fc3e0; margin: 0 0 18px; text-transform: uppercase; letter-spacing: 0.5px; }
 
@@ -22,25 +22,25 @@
         .skill-row { margin-bottom: 8px; }
         .skill-name { font-size: 9px; color: #eef4fa; margin-bottom: 2px; }
         .skill-bar-track { background: rgba(255,255,255,0.18); border-radius: 3px; height: 5px; width: 100%; }
-        .skill-bar-fill { background: #4ADE80; border-radius: 3px; height: 5px; }
+        .skill-bar-fill { background: {{ $accentColor }}; border-radius: 3px; height: 5px; }
 
         .lang-row { font-size: 9px; color: #dfe9f2; margin-bottom: 4px; }
         .lang-row b { color: #fff; }
 
-        .cv-main h2.section { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; color: #1E3A5F; border-bottom: 2px solid #16A34A; padding-bottom: 4px; margin: 0 0 10px; }
+        .cv-main h2.section { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; color: #1E3A5F; border-bottom: 2px solid {{ $accentColor }}; padding-bottom: 4px; margin: 0 0 10px; }
         .cv-main .section-block { margin-bottom: 18px; }
         .cv-text { font-size: 10px; color: #333; margin: 0; }
 
         table.timeline { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
         table.timeline td { vertical-align: top; padding: 0; }
         td.timeline-rail { width: 14px; padding-top: 3px; }
-        .timeline-dot { display: block; width: 7px; height: 7px; border-radius: 50%; background: #16A34A; }
+        .timeline-dot { display: block; width: 7px; height: 7px; border-radius: 50%; background: {{ $accentColor }}; }
         td.timeline-body { padding-bottom: 13px; border-left: 2px solid #E2E8F0; padding-left: 10px; }
         table.timeline tr:last-child td.timeline-body { border-left: 2px solid transparent; }
         table.entry-row { width: 100%; border-collapse: collapse; }
         table.entry-row td { padding: 0; vertical-align: baseline; }
         .entry-title { font-weight: bold; font-size: 10.5px; color: #14213D; text-align: left; }
-        .entry-date { font-size: 9px; color: #16A34A; font-weight: bold; text-align: right; white-space: nowrap; }
+        .entry-date { font-size: 9px; color: {{ $accentColor }}; font-weight: bold; text-align: right; white-space: nowrap; }
         .entry-sub { font-size: 9.5px; color: #64748B; margin: 1px 0 4px; }
     </style>
 </head>

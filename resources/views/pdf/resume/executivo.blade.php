@@ -5,7 +5,7 @@
     <style>
         @page { margin: 0; }
         body { font-family: 'DejaVu Sans', sans-serif; color: #1a1a1a; font-size: 11px; line-height: 1.5; margin: 0; }
-        .cv-header { background: #1E3A5F; color: #fff; padding: 22px 36px; margin-bottom: 0; border-bottom: 4px solid #16A34A; }
+        .cv-header { background: #1E3A5F; color: #fff; padding: 22px 36px; margin-bottom: 0; border-bottom: 4px solid {{ $accentColor }}; }
         .cv-name { font-size: 23px; font-weight: bold; margin: 0 0 4px; color: #fff; }
         .cv-contact { font-size: 9.5px; color: #cbd5e1; margin: 0; }
         .cv-section { margin: 0 36px 13px; padding-top: 13px; }

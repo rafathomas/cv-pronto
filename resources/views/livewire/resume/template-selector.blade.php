@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-6 gap-4 flex-wrap">
         <div>
             <p class="text-xs font-bold uppercase tracking-wide text-accent-dark">Exportar</p>
-            <h1 class="text-2xl font-bold text-gray-900 mt-1">Escolha o template e gere o PDF</h1>
+            <h1 class="text-2xl font-bold text-gray-900 mt-1">Escolha o template e a cor</h1>
         </div>
         <a href="{{ route('resume.pdf.download', ['resume' => $resume, 'template' => $selectedTemplate]) }}"
             class="inline-flex items-center gap-2 text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-4 py-2.5 transition">
@@ -12,14 +12,112 @@
         </a>
     </div>
 
+    {{-- Seletor de cor de destaque --}}
+    <div class="flex items-center gap-3 mb-6 flex-wrap">
+        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Cor de destaque</span>
+        <div class="flex items-center gap-2">
+            @foreach ($accentColors as $name => $hex)
+                <button type="button" wire:click="selectColor('{{ $hex }}')" title="{{ $name }}" aria-label="Cor {{ $name }}"
+                    class="w-7 h-7 rounded-full border-2 transition flex items-center justify-center {{ $selectedColor === $hex ? 'border-gray-800 scale-110' : 'border-transparent hover:scale-105' }}"
+                    style="background-color: {{ $hex }};">
+                    @if ($selectedColor === $hex)
+                        <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></svg>
+                    @endif
+                </button>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Miniaturas dos templates --}}
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
         @foreach ($templates as $template)
             <button type="button" wire:click="selectTemplate('{{ $template->value }}')"
-                class="rounded-lg border-2 overflow-hidden text-left transition
+                class="rounded-lg border-2 overflow-hidden text-left transition bg-white
                     {{ $selectedTemplate === $template->value ? 'border-accent ring-2 ring-accent/30' : 'border-gray-200 hover:border-gray-300' }}">
-                <div class="aspect-[3/4] bg-gray-50 flex items-center justify-center text-gray-300">
-                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h6M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/></svg>
+
+                <div class="aspect-[3/4] p-2 overflow-hidden" style="background: #f8fafc;">
+                    @switch($template->value)
+                        @case('classico')
+                            <div class="h-full bg-white p-2 text-[4px] leading-none" style="border-bottom: 2px solid #1E3A5F;">
+                                <div class="h-1.5 w-3/5 rounded-sm mb-1" style="background:#1E3A5F"></div>
+                                <div class="h-0.5 w-4/5 rounded-sm bg-gray-300 mb-2"></div>
+                                @for ($i = 0; $i < 3; $i++)
+                                    <div class="flex items-center gap-0.5 mb-1">
+                                        <span class="w-1 h-1 shrink-0" style="background: {{ $selectedColor }}"></span>
+                                        <div class="h-1 w-2/5 rounded-sm" style="background:#1E3A5F"></div>
+                                    </div>
+                                    <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                    <div class="h-0.5 w-5/6 rounded-sm bg-gray-200 mb-2"></div>
+                                @endfor
+                            </div>
+                            @break
+
+                        @case('moderno')
+                            <div class="h-full bg-white flex overflow-hidden text-[4px] leading-none">
+                                <div class="w-2/5 h-full p-1.5" style="background:#1E3A5F">
+                                    <div class="w-3 h-3 rounded-full mb-1" style="background:{{ $selectedColor }}"></div>
+                                    <div class="h-1 w-4/5 rounded-sm bg-white mb-2"></div>
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="h-0.5 w-full rounded-sm mb-0.5" style="background:rgba(255,255,255,0.5)"></div>
+                                        <div class="h-0.5 w-3/5 rounded-sm mb-1.5" style="background:{{ $selectedColor }}"></div>
+                                    @endfor
+                                </div>
+                                <div class="w-3/5 h-full p-1.5">
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="h-1 w-2/5 rounded-sm mb-1" style="background:#1E3A5F; border-bottom:1px solid {{ $selectedColor }}"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-2"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @break
+
+                        @case('minimalista')
+                            <div class="h-full bg-white p-2 text-[4px] leading-none">
+                                <div class="h-1.5 w-2/5 rounded-sm mb-2" style="background:#222; border-bottom:1.5px solid {{ $selectedColor }}"></div>
+                                @for ($i = 0; $i < 3; $i++)
+                                    <div class="h-0.5 w-1/4 rounded-sm bg-gray-300 mb-1"></div>
+                                    <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                    <div class="h-0.5 w-4/5 rounded-sm bg-gray-200 mb-2.5"></div>
+                                @endfor
+                            </div>
+                            @break
+
+                        @case('executivo')
+                            <div class="h-full bg-white overflow-hidden text-[4px] leading-none">
+                                <div class="p-1.5" style="background:#1E3A5F; border-bottom:2px solid {{ $selectedColor }}">
+                                    <div class="h-1.5 w-3/5 rounded-sm bg-white"></div>
+                                </div>
+                                <div class="p-1.5">
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="h-1 w-2/5 rounded-sm mb-1" style="background:#1E3A5F"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-2"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @break
+
+                        @case('tecnologia')
+                            <div class="h-full overflow-hidden text-[4px] leading-none" style="background:#f8fafc">
+                                <div class="p-1.5 m-1 rounded-sm" style="background:#0f172a">
+                                    <div class="h-1.5 w-3/5 rounded-sm" style="background:{{ $selectedColor }}"></div>
+                                </div>
+                                <div class="p-1.5">
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="flex items-center gap-0.5 mb-1">
+                                            <span class="w-1 h-1 shrink-0" style="background:{{ $selectedColor }}"></span>
+                                            <div class="h-1 w-2/5 rounded-sm bg-gray-700"></div>
+                                        </div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-300 mb-0.5"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-300 mb-2"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @break
+                    @endswitch
                 </div>
+
                 <p class="text-xs font-semibold text-center py-2 border-t border-gray-200">{{ $template->label() }}</p>
             </button>
         @endforeach
@@ -27,7 +125,7 @@
 
     <div class="bg-white border border-gray-200 rounded-xl overflow-hidden" style="height: 80vh;">
         <iframe src="{{ route('resume.pdf.download', ['resume' => $resume, 'template' => $selectedTemplate, 'inline' => 1]) }}"
-            wire:key="preview-{{ $selectedTemplate }}" class="w-full h-full" title="Pré-visualização do currículo"></iframe>
+            wire:key="preview-{{ $selectedTemplate }}-{{ $selectedColor }}" class="w-full h-full" title="Pré-visualização do currículo"></iframe>
     </div>
 
 </div>

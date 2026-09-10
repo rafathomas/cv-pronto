@@ -16,6 +16,7 @@ class ResumePdfService
 
         return Pdf::loadView($template->view(), [
             'resume' => $resume,
+            'accentColor' => $resume->accent_color ?: '#16A34A',
             'customizedSummary' => $customized?->summary,
             'customizedExperiences' => $customized?->experience_descriptions ?? [],
             'customizedSkills' => $customized?->highlighted_skills,
