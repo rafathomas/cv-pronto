@@ -16,6 +16,17 @@ return [
 
     'default' => 'free',
 
+    'feature_labels' => [
+        'pdf_basic' => 'Exportação em PDF',
+        'pdf_premium' => 'Templates premium em PDF',
+        'job_customization' => 'Currículo adaptado para cada vaga',
+        'premium_templates' => 'Acesso a todos os templates',
+        'cover_letters' => 'Carta de apresentação com IA',
+        'advanced_analysis' => 'Análise avançada de currículo',
+        'online_resume' => 'Currículo online compartilhável',
+        'application_tracker' => 'Acompanhamento de candidaturas',
+    ],
+
     'plans' => [
         'free' => [
             'name' => 'Free',

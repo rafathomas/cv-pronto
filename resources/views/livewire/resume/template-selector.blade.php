@@ -28,13 +28,29 @@
         </div>
     </div>
 
+    @error('template')
+        <div class="flex items-center justify-between gap-3 mb-4 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+            <span>{{ $message }}</span>
+            <a href="{{ route('billing.plans') }}" class="shrink-0 font-semibold text-amber-900 hover:underline">Ver planos</a>
+        </div>
+    @enderror
+
     {{-- Miniaturas dos templates --}}
     @php $thumbPhoto = $resume->hasPhoto() ? $resume->photoDataUri() : null; @endphp
-    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
         @foreach ($templates as $template)
+            @php $locked = $template->isPremium() && ! $hasPremiumTemplates; @endphp
             <button type="button" wire:click="selectTemplate('{{ $template->value }}')"
-                class="rounded-lg border-2 overflow-hidden text-left transition bg-white
-                    {{ $selectedTemplate === $template->value ? 'border-accent ring-2 ring-accent/30' : 'border-gray-200 hover:border-gray-300' }}">
+                class="relative rounded-lg border-2 overflow-hidden text-left transition bg-white
+                    {{ $selectedTemplate === $template->value ? 'border-accent ring-2 ring-accent/30' : 'border-gray-200 hover:border-gray-300' }}
+                    {{ $locked ? 'opacity-60' : '' }}">
+
+                @if ($locked)
+                    <span class="absolute top-1.5 right-1.5 z-10 inline-flex items-center gap-1 text-[10px] font-semibold text-white bg-gray-900/80 rounded-full px-2 py-0.5">
+                        <svg class="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2ZM7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Premium
+                    </span>
+                @endif
 
                 <div class="aspect-[3/4] p-2 overflow-hidden" style="background: #f8fafc;">
                     @switch($template->value)
@@ -120,6 +136,42 @@
                                         </div>
                                         <div class="h-0.5 w-full rounded-sm bg-gray-300 mb-0.5"></div>
                                         <div class="h-0.5 w-full rounded-sm bg-gray-300 mb-2"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @break
+
+                        @case('elegante')
+                            <div class="h-full bg-white flex overflow-hidden text-[4px] leading-none">
+                                <div class="w-1 h-full shrink-0" style="background:{{ $selectedColor }}"></div>
+                                <div class="flex-1 p-1.5">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <div class="flex-1">
+                                            <div class="h-1.5 w-3/5 rounded-sm mb-1 bg-gray-800"></div>
+                                            <div class="h-0.5 w-2/5 rounded-sm bg-gray-300"></div>
+                                        </div>
+                                        <div class="w-4 h-4 rounded-full shrink-0 ml-1 bg-gray-200 bg-cover bg-center" @if($thumbPhoto) style="background-image:url('{{ $thumbPhoto }}')" @endif></div>
+                                    </div>
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="h-1 w-2/5 rounded-sm mb-1 mt-2" style="color:{{ $selectedColor }}; background:{{ $selectedColor }}"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                        <div class="h-0.5 w-5/6 rounded-sm bg-gray-200"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                            @break
+
+                        @case('criativo')
+                            <div class="h-full bg-white overflow-hidden text-[4px] leading-none">
+                                <div class="p-2 text-center" style="background:{{ $selectedColor }}">
+                                    <div class="w-5 h-5 rounded-full mx-auto mb-1 bg-cover bg-center" style="background-color:rgba(255,255,255,0.3); @if($thumbPhoto) background-image:url('{{ $thumbPhoto }}') @endif"></div>
+                                    <div class="h-1 w-3/5 mx-auto rounded-sm bg-white"></div>
+                                </div>
+                                <div class="p-1.5">
+                                    @for ($i = 0; $i < 3; $i++)
+                                        <div class="h-1 w-2/5 rounded-sm mb-1" style="border-left:2px solid {{ $selectedColor }}; padding-left:2px;">&nbsp;</div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-0.5"></div>
+                                        <div class="h-0.5 w-full rounded-sm bg-gray-200 mb-2"></div>
                                     @endfor
                                 </div>
                             </div>

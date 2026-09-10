@@ -126,6 +126,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
                 @php
                     $plans = config('plans.plans');
+                    $featureLabels = config('plans.feature_labels');
                 @endphp
                 @foreach ($plans as $key => $plan)
                     <div class="bg-white border-2 rounded-xl p-6 {{ $key === 'pro' ? 'border-accent' : 'border-gray-200' }}">
@@ -136,7 +137,7 @@
                         </p>
                         <ul class="text-sm text-gray-600 mt-4 space-y-1.5">
                             @foreach (array_slice($plan['features'], 0, 4) as $feature)
-                                <li>✓ {{ str_replace('_', ' ', $feature) }}</li>
+                                <li>✓ {{ $featureLabels[$feature] ?? str_replace('_', ' ', $feature) }}</li>
                             @endforeach
                         </ul>
                     </div>

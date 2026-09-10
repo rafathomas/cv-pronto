@@ -24,7 +24,7 @@
                     @foreach ($plan->features as $feature)
                         <li class="flex gap-2">
                             <svg class="w-4 h-4 text-accent-dark shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></svg>
-                            {{ str_replace('_', ' ', $feature) }}
+                            {{ config("plans.feature_labels.$feature", str_replace('_', ' ', $feature)) }}
                         </li>
                     @endforeach
                 </ul>

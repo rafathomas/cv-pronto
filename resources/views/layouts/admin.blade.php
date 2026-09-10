@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,16 +40,16 @@
             </a>
 
             <nav class="flex-1 space-y-0.5">
-                <a href="{{ route('admin.dashboard') }}"
+                <a href="{{ route('admin.dashboard') }}" data-nav-section="visao-geral"
                     @class([
-                        'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition',
+                        'nav-section-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition',
                         'bg-gray-200/70 dark:bg-slate-800/70 text-gray-900 dark:text-white' => request()->routeIs('admin.dashboard'),
                         'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50' => ! request()->routeIs('admin.dashboard'),
                     ])>
                     <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10"/></svg>
                     Visão geral
                 </a>
-                <a href="{{ route('admin.dashboard') }}#usuarios" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
+                <a href="{{ route('admin.dashboard') }}#usuarios" data-nav-section="usuarios" class="nav-section-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
                     <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 0 1 3-3.87m6-1.13a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm6-2a4 4 0 1 0-3.2-6.4"/></svg>
                     Usuários
                 </a>
@@ -62,11 +62,11 @@
                     <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
                     Assinaturas
                 </a>
-                <a href="{{ route('admin.dashboard') }}#receita" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
+                <a href="{{ route('admin.dashboard') }}#receita" data-nav-section="receita" class="nav-section-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
                     <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     Receita &amp; pagamentos
                 </a>
-                <a href="{{ route('admin.dashboard') }}#ia" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
+                <a href="{{ route('admin.dashboard') }}#ia" data-nav-section="ia" class="nav-section-link flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800/50 transition">
                     <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg>
                     Uso de IA
                 </a>
@@ -132,6 +132,37 @@
             });
 
             syncIcon();
+        })();
+
+        (function () {
+            var links = document.querySelectorAll('.nav-section-link[data-nav-section]');
+            if (! links.length) return;
+
+            var activeClasses = ['bg-gray-200/70', 'dark:bg-slate-800/70', 'text-gray-900', 'dark:text-white'];
+            var idleClasses = ['text-gray-500', 'dark:text-slate-400'];
+
+            function setActive(id) {
+                links.forEach(function (link) {
+                    var isActive = link.dataset.navSection === id;
+                    activeClasses.forEach(function (c) { link.classList.toggle(c, isActive); });
+                    idleClasses.forEach(function (c) { link.classList.toggle(c, !isActive); });
+                });
+            }
+
+            var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+            if (sections.length && 'IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) setActive(entry.target.id);
+                    });
+                }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+                sections.forEach(function (section) { observer.observe(section); });
+            }
+
+            if (window.location.hash) {
+                setActive(window.location.hash.slice(1));
+            }
         })();
     </script>
 </body>

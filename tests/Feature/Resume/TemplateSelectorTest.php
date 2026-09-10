@@ -1,19 +1,55 @@
 <?php
 
 use App\Domain\Resume\Models\Resume;
+use App\Domain\Subscription\Enums\SubscriptionStatus;
+use App\Domain\Subscription\Models\Plan;
+use App\Domain\Subscription\Models\Subscription;
 use App\Livewire\Resume\TemplateSelector;
 use App\Models\User;
 use Illuminate\Support\Facades\View;
 use Livewire\Livewire;
 
-it('permite trocar o template do currículo', function () {
+it('permite trocar para o template gratuito', function () {
+    $user = User::factory()->create();
+    $resume = Resume::factory()->for($user)->create(['template' => 'classico']);
+
+    Livewire::actingAs($user)
+        ->test(TemplateSelector::class, ['resume' => $resume])
+        ->call('selectTemplate', 'classico')
+        ->assertSet('selectedTemplate', 'classico')
+        ->assertHasNoErrors();
+
+    expect($resume->fresh()->template)->toBe('classico');
+});
+
+it('impede um usuário do plano free de trocar para um template premium', function () {
     $user = User::factory()->create();
     $resume = Resume::factory()->for($user)->create(['template' => 'classico']);
 
     Livewire::actingAs($user)
         ->test(TemplateSelector::class, ['resume' => $resume])
         ->call('selectTemplate', 'moderno')
-        ->assertSet('selectedTemplate', 'moderno');
+        ->assertSet('selectedTemplate', 'classico')
+        ->assertHasErrors('template');
+
+    expect($resume->fresh()->template)->toBe('classico');
+});
+
+it('permite um usuário do plano pro trocar para um template premium', function () {
+    $user = User::factory()->create();
+    $resume = Resume::factory()->for($user)->create(['template' => 'classico']);
+    Subscription::create([
+        'user_id' => $user->id,
+        'plan_id' => Plan::where('key', 'pro')->firstOrFail()->id,
+        'gateway' => 'test',
+        'status' => SubscriptionStatus::Active,
+    ]);
+
+    Livewire::actingAs($user)
+        ->test(TemplateSelector::class, ['resume' => $resume])
+        ->call('selectTemplate', 'moderno')
+        ->assertSet('selectedTemplate', 'moderno')
+        ->assertHasNoErrors();
 
     expect($resume->fresh()->template)->toBe('moderno');
 });

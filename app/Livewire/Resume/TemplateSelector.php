@@ -4,6 +4,8 @@ namespace App\Livewire\Resume;
 
 use App\Domain\Resume\Enums\ResumeTemplate;
 use App\Domain\Resume\Models\Resume;
+use App\Domain\Subscription\Services\SubscriptionService;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class TemplateSelector extends Component
@@ -42,12 +44,25 @@ class TemplateSelector extends Component
     {
         $this->authorize('update', $this->resume);
 
-        if (! ResumeTemplate::tryFrom($template)) {
+        $resumeTemplate = ResumeTemplate::tryFrom($template);
+
+        if (! $resumeTemplate) {
+            return;
+        }
+
+        if ($resumeTemplate->isPremium() && ! $this->hasPremiumTemplates()) {
+            $this->addError('template', 'Este template é exclusivo dos planos Pro e Premium. Faça upgrade para usá-lo.');
+
             return;
         }
 
         $this->selectedTemplate = $template;
         $this->resume->update(['template' => $template]);
+    }
+
+    public function hasPremiumTemplates(): bool
+    {
+        return app(SubscriptionService::class)->currentPlan(Auth::user())->hasFeature('premium_templates');
     }
 
     public function selectColor(string $color): void
@@ -67,6 +82,7 @@ class TemplateSelector extends Component
         return view('livewire.resume.template-selector', [
             'templates' => ResumeTemplate::cases(),
             'accentColors' => self::ACCENT_COLORS,
+            'hasPremiumTemplates' => $this->hasPremiumTemplates(),
         ])->layout('layouts.app');
     }
 }

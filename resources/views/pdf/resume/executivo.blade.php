@@ -5,16 +5,16 @@
     <style>
         @page { margin: 0; }
         body { font-family: 'DejaVu Sans', sans-serif; color: #1a1a1a; font-size: 11px; line-height: 1.5; margin: 0; }
-        .cv-header { background: #1E3A5F; color: #fff; padding: 22px 36px; margin-bottom: 0; border-bottom: 4px solid {{ $accentColor }}; }
-        table.cv-header-table { background: #1E3A5F; margin-bottom: 0; border-bottom: 4px solid {{ $accentColor }}; width: 100%; }
-        .cv-header-text { vertical-align: middle; padding: 22px 0 22px 36px; }
-        .cv-header-photo { width: 64px; vertical-align: middle; text-align: right; padding: 22px 36px 22px 0; }
+        .cv-header { background: #1E3A5F; color: #fff; padding: 20px 36px; margin-bottom: 0; border-bottom: 3px solid {{ $accentColor }}; }
+        table.cv-header-table { background: #1E3A5F; margin-bottom: 0; border-bottom: 3px solid {{ $accentColor }}; width: 100%; }
+        .cv-header-text { vertical-align: middle; padding: 20px 0 20px 36px; }
+        .cv-header-photo { width: 64px; vertical-align: middle; text-align: right; padding: 20px 36px 20px 0; }
         .cv-photo-frame { width: 58px; height: 58px; border-radius: 50%; overflow: hidden; display: inline-block; border: 2px solid rgba(255,255,255,0.4); }
         .cv-photo { width: 54px; height: 54px; }
-        .cv-name { font-size: 23px; font-weight: bold; margin: 0 0 4px; color: #fff; }
+        .cv-name { font-size: 22px; font-weight: bold; margin: 0 0 4px; color: #fff; letter-spacing: 0.3px; }
         .cv-contact { font-size: 9.5px; color: #cbd5e1; margin: 0; }
-        .cv-section { margin: 0 36px 13px; padding-top: 13px; }
-        .cv-section-title { font-size: 10.5px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.8px; color: #1E3A5F; border-bottom: 2px solid #1E3A5F; padding-bottom: 3px; margin: 0 0 6px; }
+        .cv-section { margin: 0 36px 11px; padding-top: 11px; }
+        .cv-section-title { font-size: 10.5px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #1E3A5F; border-bottom: 2px solid {{ $accentColor }}; padding-bottom: 3px; margin: 0 0 6px; }
         .cv-entry { margin-bottom: 8px; }
         table.cv-entry-row { width: 100%; border-collapse: collapse; font-weight: bold; font-size: 11px; }
         table.cv-entry-row td { padding: 0; vertical-align: baseline; }

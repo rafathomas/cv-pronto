@@ -8,25 +8,25 @@
         body { font-family: 'DejaVu Sans', sans-serif; color: #1a1a1a; font-size: 10.5px; line-height: 1.5; margin: 0; }
 
         table.cv-shell { width: 100%; border-collapse: collapse; }
-        td.cv-sidebar { width: 34%; background: #1E3A5F; color: #fff; padding: 28px 20px; vertical-align: top; }
+        td.cv-sidebar { width: 34%; background: {{ $accentColor }}; color: #fff; padding: 28px 20px; vertical-align: top; }
         td.cv-main { width: 66%; background: #fff; padding: 30px 28px; vertical-align: top; }
 
-        .cv-avatar { width: 58px; height: 58px; border-radius: 50%; background: {{ $accentColor }}; color: #fff; font-size: 22px; font-weight: bold; text-align: center; line-height: 58px; margin-bottom: 14px; }
-        .cv-avatar-frame { width: 58px; height: 58px; border-radius: 50%; overflow: hidden; margin-bottom: 14px; }
+        .cv-avatar { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,0.25); color: #fff; font-size: 22px; font-weight: bold; text-align: center; line-height: 58px; margin-bottom: 14px; }
+        .cv-avatar-frame { width: 58px; height: 58px; border-radius: 50%; overflow: hidden; margin-bottom: 14px; border: 2px solid rgba(255,255,255,0.5); }
         .cv-avatar-photo { width: 58px; height: 58px; }
         .cv-sidebar h1 { font-size: 17px; font-weight: bold; color: #fff; margin: 0 0 3px; line-height: 1.25; }
-        .cv-sidebar .cv-role { font-size: 9.5px; color: #9fc3e0; margin: 0 0 18px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cv-sidebar .cv-role { font-size: 9.5px; color: rgba(255,255,255,0.85); margin: 0 0 18px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .side-title { font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #7fb3da; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; margin: 18px 0 8px; }
+        .side-title { font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.35); padding-bottom: 4px; margin: 18px 0 8px; }
         .side-title.first { margin-top: 0; }
-        .side-line { font-size: 9px; color: #dfe9f2; margin-bottom: 5px; word-wrap: break-word; }
+        .side-line { font-size: 9px; color: rgba(255,255,255,0.9); margin-bottom: 5px; word-wrap: break-word; }
 
         .skill-row { margin-bottom: 8px; }
-        .skill-name { font-size: 9px; color: #eef4fa; margin-bottom: 2px; }
-        .skill-bar-track { background: rgba(255,255,255,0.18); border-radius: 3px; height: 5px; width: 100%; }
-        .skill-bar-fill { background: {{ $accentColor }}; border-radius: 3px; height: 5px; }
+        .skill-name { font-size: 9px; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+        .skill-bar-track { background: rgba(255,255,255,0.25); border-radius: 3px; height: 5px; width: 100%; }
+        .skill-bar-fill { background: #fff; border-radius: 3px; height: 5px; }
 
-        .lang-row { font-size: 9px; color: #dfe9f2; margin-bottom: 4px; }
+        .lang-row { font-size: 9px; color: rgba(255,255,255,0.9); margin-bottom: 4px; }
         .lang-row b { color: #fff; }
 
         .cv-main h2.section { font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.6px; color: #1E3A5F; border-bottom: 2px solid {{ $accentColor }}; padding-bottom: 4px; margin: 0 0 10px; }
