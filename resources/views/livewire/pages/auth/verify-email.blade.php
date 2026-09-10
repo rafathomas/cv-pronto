@@ -36,23 +36,26 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Confirme seu e-mail</h1>
+        <p class="text-sm text-gray-500 mt-2">
+            Obrigado por se cadastrar! Antes de começar, clique no link de confirmação que acabamos de enviar para o seu e-mail. Se não recebeu, podemos enviar novamente.
+        </p>
     </div>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+        <div class="mb-4 font-medium text-sm text-accent-dark bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+            Um novo link de confirmação foi enviado para o e-mail que você cadastrou.
         </div>
     @endif
 
-    <div class="mt-4 flex items-center justify-between">
+    <div class="flex items-center justify-between gap-4">
         <x-primary-button wire:click="sendVerification">
-            {{ __('Resend Verification Email') }}
+            Reenviar e-mail de confirmação
         </x-primary-button>
 
-        <button wire:click="logout" type="submit" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-            {{ __('Log Out') }}
+        <button wire:click="logout" type="submit" class="text-sm font-semibold text-gray-500 hover:text-gray-800">
+            Sair
         </button>
     </div>
 </div>
