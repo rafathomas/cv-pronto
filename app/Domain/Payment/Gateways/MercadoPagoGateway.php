@@ -82,11 +82,11 @@ class MercadoPagoGateway implements PaymentGatewayInterface
 
     public function cancelSubscription(Subscription $subscription): void
     {
-        $this->ensureConfigured();
-
         if (! $subscription->gateway_subscription_id) {
             return;
         }
+
+        $this->ensureConfigured();
 
         Http::withToken($this->config['access_token'])
             ->put(self::BASE_URL."/preapproval/{$subscription->gateway_subscription_id}", [

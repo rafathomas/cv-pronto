@@ -2,6 +2,7 @@
 
 use App\Domain\Analytics\Services\AnalyticsService;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminSubscriptionController;
 use App\Http\Controllers\BillingWebhookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResumePdfController;
@@ -56,9 +57,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('planos', BillingPlans::class)->name('billing.plans');
     Route::view('assinatura/sucesso', 'billing.success')->name('billing.success');
 
-    Route::get('admin', AdminDashboardController::class)
-        ->middleware('can:admin')
-        ->name('admin.dashboard');
+    Route::middleware('can:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', AdminDashboardController::class)->name('dashboard');
+        Route::get('assinaturas', [AdminSubscriptionController::class, 'index'])->name('subscriptions.index');
+        Route::patch('assinaturas/{user}', [AdminSubscriptionController::class, 'update'])->name('subscriptions.update');
+        Route::delete('assinaturas/{user}', [AdminSubscriptionController::class, 'destroy'])->name('subscriptions.destroy');
+    });
 });
 
 Route::post('billing/webhook/{gateway}', BillingWebhookController::class)->name('billing.webhook');

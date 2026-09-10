@@ -84,6 +84,28 @@ class SubscriptionService
         $subscription->update(['status' => SubscriptionStatus::Cancelled, 'cancelled_at' => now()]);
     }
 
+    /**
+     * Concede um plano manualmente (uso administrativo: cortesia, correção de
+     * pagamento, downgrade forçado). Nunca passa pelo gateway de pagamento.
+     */
+    public function adminAssignPlan(User $user, Plan $plan): ?Subscription
+    {
+        $user->subscriptions()
+            ->where('status', SubscriptionStatus::Active)
+            ->update(['status' => SubscriptionStatus::Cancelled, 'cancelled_at' => now()]);
+
+        if ($plan->key === config('plans.default')) {
+            return null;
+        }
+
+        return $user->subscriptions()->create([
+            'plan_id' => $plan->id,
+            'gateway' => 'manual',
+            'status' => SubscriptionStatus::Active,
+            'current_period_end' => null,
+        ]);
+    }
+
     private function activate(Subscription $subscription, WebhookEvent $event): void
     {
         $subscription->update([
