@@ -33,6 +33,23 @@
         @endforeach
     </div>
 
+    @error('ai')
+        <div class="mb-6 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">
+            {{ $message }}
+        </div>
+    @enderror
+
+    @if (count($missingInfoSuggestions))
+        <div class="mb-6 rounded-lg bg-blue-50 border border-blue-200 text-blue-900 text-sm px-4 py-3">
+            <p class="font-semibold mb-1.5">A IA notou que algumas informações podem estar faltando:</p>
+            <ul class="list-disc list-inside space-y-0.5">
+                @foreach ($missingInfoSuggestions as $suggestion)
+                    <li>{{ $suggestion }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     {{-- Dados pessoais --}}
     @if ($activeTab === 'dados')
         <form wire:submit="savePersonalData" class="bg-white border border-gray-200 rounded-xl p-6 space-y-5">
@@ -84,7 +101,13 @@
         <form wire:submit="saveSummary" class="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <x-input-label for="professionalSummary" value="Resumo profissional" />
-                <span class="text-xs text-gray-400">A IA de melhoria será integrada na próxima etapa</span>
+                <button type="button" wire:click="improveSummary" wire:loading.attr="disabled" wire:target="improveSummary"
+                    class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand hover:bg-brand-dark disabled:opacity-60 rounded-full px-3 py-1.5 transition">
+                    <svg wire:loading.remove wire:target="improveSummary" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg>
+                    <svg wire:loading wire:target="improveSummary" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                    <span wire:loading.remove wire:target="improveSummary">Melhorar com IA</span>
+                    <span wire:loading wire:target="improveSummary">Melhorando...</span>
+                </button>
             </div>
             <textarea id="professionalSummary" wire:model="professionalSummary" rows="6"
                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-accent focus:ring-accent text-sm"
@@ -112,10 +135,19 @@
                                 <p class="text-sm text-gray-600 mt-2">{{ $experience->description }}</p>
                             @endif
                         </div>
-                        <button wire:click="deleteExperience({{ $experience->id }})" wire:confirm="Remover esta experiência?"
-                            class="text-gray-400 hover:text-red-600" aria-label="Remover experiência">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
-                        </button>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <button type="button" wire:click="improveExperience({{ $experience->id }})" wire:loading.attr="disabled" wire:target="improveExperience({{ $experience->id }})"
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand hover:bg-brand-dark disabled:opacity-60 rounded-full px-3 py-1.5 transition">
+                                <svg wire:loading.remove wire:target="improveExperience({{ $experience->id }})" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z"/></svg>
+                                <svg wire:loading wire:target="improveExperience({{ $experience->id }})" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                                <span wire:loading.remove wire:target="improveExperience({{ $experience->id }})">Melhorar descrição</span>
+                                <span wire:loading wire:target="improveExperience({{ $experience->id }})">Melhorando...</span>
+                            </button>
+                            <button wire:click="deleteExperience({{ $experience->id }})" wire:confirm="Remover esta experiência?"
+                                class="text-gray-400 hover:text-red-600" aria-label="Remover experiência">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             @endforeach

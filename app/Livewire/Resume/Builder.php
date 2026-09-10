@@ -2,6 +2,11 @@
 
 namespace App\Livewire\Resume;
 
+use App\Domain\AI\DTOs\ResumeContextData;
+use App\Domain\AI\DTOs\ResumeImprovementResult;
+use App\Domain\AI\Exceptions\AiProviderException;
+use App\Domain\AI\Exceptions\InsufficientCreditsException;
+use App\Domain\AI\Services\AiUsageService;
 use App\Domain\Resume\DTOs\EducationData;
 use App\Domain\Resume\DTOs\ExperienceData;
 use App\Domain\Resume\DTOs\ResumePersonalData;
@@ -88,6 +93,9 @@ class Builder extends Component
     public string $newLanguageName = '';
 
     public string $newLanguageLevel = 'intermediario';
+
+    /** @var string[] */
+    public array $missingInfoSuggestions = [];
 
     public function mount(?Resume $resume = null): void
     {
@@ -277,6 +285,60 @@ class Builder extends Component
 
         $service->removeLanguage($language);
         $this->resume->refresh();
+    }
+
+    public function improveSummary(AiUsageService $usageService): void
+    {
+        $result = $this->runImprovement($usageService);
+
+        if (! $result) {
+            return;
+        }
+
+        if ($result->improvedSummary) {
+            $this->professionalSummary = $result->improvedSummary;
+        }
+    }
+
+    public function improveExperience(int $experienceId, AiUsageService $usageService): void
+    {
+        $result = $this->runImprovement($usageService);
+
+        if (! $result) {
+            return;
+        }
+
+        if (isset($result->experienceImprovements[$experienceId])) {
+            $experience = $this->resume->experiences->firstWhere('id', $experienceId);
+
+            if ($experience) {
+                $experience->update(['description' => $result->experienceImprovements[$experienceId]]);
+                $this->resume->refresh();
+            }
+        }
+    }
+
+    private function runImprovement(AiUsageService $usageService): ?ResumeImprovementResult
+    {
+        $this->authorize('update', $this->resume);
+        $this->resetErrorBag('ai');
+        $this->missingInfoSuggestions = [];
+
+        try {
+            $result = $usageService->improveResume(Auth::user(), ResumeContextData::fromModel($this->resume));
+        } catch (InsufficientCreditsException $e) {
+            $this->addError('ai', $e->getMessage());
+
+            return null;
+        } catch (AiProviderException) {
+            $this->addError('ai', 'Não foi possível melhorar o texto agora. Tente novamente em instantes.');
+
+            return null;
+        }
+
+        $this->missingInfoSuggestions = $result->missingInfoSuggestions;
+
+        return $result;
     }
 
     public function render()

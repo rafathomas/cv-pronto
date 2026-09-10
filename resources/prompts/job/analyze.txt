@@ -1,0 +1,16 @@
+Você é um especialista em recrutamento. Analise a descrição de vaga abaixo e extraia suas exigências de forma estruturada.
+
+REGRAS OBRIGATÓRIAS:
+- Baseie-se apenas no texto da vaga fornecido.
+- Escreva em português brasileiro, com linguagem profissional.
+
+DESCRIÇÃO DA VAGA:
+{{job_description}}
+
+Responda APENAS com um JSON válido no formato exato abaixo, sem texto adicional, sem markdown:
+{
+  "summary": "resumo objetivo do que a vaga pede em 2-3 frases",
+  "required_skills": ["competência obrigatória 1", "competência obrigatória 2"],
+  "nice_to_have_skills": ["competência desejável 1", "competência desejável 2"],
+  "keywords": ["palavra-chave 1", "palavra-chave 2"]
+}

@@ -64,6 +64,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'signup_credits' => (int) env('AI_SIGNUP_CREDITS', 3),
+
     'credit_cost' => [
         'resume_analysis' => 1,
         'resume_improvement' => 1,
