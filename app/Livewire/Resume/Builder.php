@@ -120,9 +120,65 @@ class Builder extends Component
         $this->professionalSummary = $this->resume->professional_summary;
     }
 
-    public function setTab(string $tab): void
+    /**
+     * Passos do assistente, na ordem em que são exibidos.
+     *
+     * @return array<string, string>
+     */
+    public static function steps(): array
     {
-        $this->activeTab = $tab;
+        return [
+            'dados' => 'Dados pessoais',
+            'resumo' => 'Resumo',
+            'experiencia' => 'Experiência',
+            'formacao' => 'Formação',
+            'cursos' => 'Cursos',
+            'habilidades' => 'Habilidades',
+            'idiomas' => 'Idiomas',
+        ];
+    }
+
+    public function goToStep(string $step): void
+    {
+        if (array_key_exists($step, self::steps())) {
+            $this->activeTab = $step;
+        }
+    }
+
+    public function previousStep(): void
+    {
+        $keys = array_keys(self::steps());
+        $index = array_search($this->activeTab, $keys, true);
+
+        if ($index !== false && $index > 0) {
+            $this->activeTab = $keys[$index - 1];
+        }
+    }
+
+    public function nextStep(): void
+    {
+        $keys = array_keys(self::steps());
+        $index = array_search($this->activeTab, $keys, true);
+
+        if ($index !== false && $index < count($keys) - 1) {
+            $this->activeTab = $keys[$index + 1];
+
+            return;
+        }
+
+        $this->redirectRoute('resume.templates', ['resume' => $this->resume], navigate: true);
+    }
+
+    public function continueFromDados(ResumeService $service): void
+    {
+        $this->savePersonalData($service);
+        $this->nextStep();
+    }
+
+    public function continueFromResumo(ResumeService $service): void
+    {
+        $this->saveSummary($service);
+        $this->nextStep();
     }
 
     public function savePersonalData(ResumeService $service): void
@@ -343,8 +399,13 @@ class Builder extends Component
 
     public function render()
     {
+        $keys = array_keys(self::steps());
+
         return view('livewire.resume.builder', [
             'languageLevels' => LanguageLevel::cases(),
+            'steps' => self::steps(),
+            'currentStepIndex' => array_search($this->activeTab, $keys, true),
+            'isLastStep' => $this->activeTab === end($keys),
         ])->layout('layouts.app');
     }
 }
