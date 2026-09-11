@@ -23,8 +23,8 @@
                 @auth
                     <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-brand hover:text-brand-dark">Ir para o dashboard</a>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Entrar</a>
-                    <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-4 py-2 transition">Criar conta grátis</a>
+                    <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 rounded">Entrar</a>
+                    <a href="{{ route('register') }}" class="text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-4 py-2 transition focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">Criar conta grátis</a>
                 @endauth
             </nav>
         </div>
@@ -40,10 +40,10 @@
                 Use IA para analisar, melhorar e adaptar seu currículo para cada vaga — sem inventar nada, só destacando o que você já tem.
             </p>
             <div class="flex flex-wrap gap-3 mt-8">
-                <a href="{{ route('register') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-5 py-3 transition">
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-5 py-3 transition focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                     Analisar meu currículo grátis
                 </a>
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg px-5 py-3 transition">
+                <a href="{{ route('login') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 rounded-lg px-5 py-3 transition focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">
                     Já tenho conta
                 </a>
             </div>
@@ -83,11 +83,11 @@
                     ['3', 'Melhore com IA', 'Sugestões de texto por seção, sempre a partir das suas informações reais.'],
                     ['4', 'Adapte e exporte', 'Compare com uma vaga específica e gere um PDF profissional em 1 clique.'],
                 ] as [$num, $title, $desc])
-                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                    <x-card padding="p-5">
                         <span class="w-8 h-8 rounded-lg bg-gray-100 text-brand font-bold text-sm flex items-center justify-center">{{ $num }}</span>
                         <h3 class="font-semibold mt-3">{{ $title }}</h3>
                         <p class="text-sm text-gray-500 mt-1">{{ $desc }}</p>
-                    </div>
+                    </x-card>
                 @endforeach
             </div>
         </div>
@@ -108,10 +108,10 @@
                     ['Compatível com ATS', 'Estrutura pensada para passar pelos sistemas automáticos de triagem.'],
                     ['Carta de apresentação', 'Gerada a partir do seu currículo e da vaga, pronta para editar.'],
                 ] as [$title, $desc])
-                    <div class="bg-white border border-gray-200 rounded-xl p-5">
+                    <x-card padding="p-5">
                         <h3 class="font-semibold">{{ $title }}</h3>
                         <p class="text-sm text-gray-500 mt-1">{{ $desc }}</p>
-                    </div>
+                    </x-card>
                 @endforeach
             </div>
         </div>
@@ -129,7 +129,7 @@
                     $featureLabels = config('plans.feature_labels');
                 @endphp
                 @foreach ($plans as $key => $plan)
-                    <div class="bg-white border-2 rounded-xl p-6 {{ $key === 'pro' ? 'border-accent' : 'border-gray-200' }}">
+                    <x-card class="!border-2 {{ $key === 'pro' ? '!border-accent' : '!border-gray-200' }}">
                         <span class="text-xs font-bold uppercase text-gray-400">{{ $plan['name'] }}</span>
                         <p class="text-2xl font-bold mt-1">
                             R$ {{ number_format($plan['price'] / 100, 2, ',', '.') }}
@@ -140,11 +140,11 @@
                                 <li>✓ {{ $featureLabels[$feature] ?? str_replace('_', ' ', $feature) }}</li>
                             @endforeach
                         </ul>
-                    </div>
+                    </x-card>
                 @endforeach
             </div>
             <p class="text-center mt-8">
-                <a href="{{ route('register') }}" class="inline-flex text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-5 py-3 transition">Começar grátis</a>
+                <a href="{{ route('register') }}" class="inline-flex text-sm font-semibold text-white bg-accent hover:bg-accent-dark rounded-lg px-5 py-3 transition focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2">Começar grátis</a>
             </p>
         </div>
     </section>
@@ -174,7 +174,7 @@
         <div class="bg-gradient-to-br from-brand to-brand-dark rounded-2xl px-8 py-14 text-center text-white">
             <h2 class="text-2xl sm:text-3xl font-bold">Pronto para parar de ser ignorado pelos recrutadores?</h2>
             <p class="text-white/80 mt-2">Leva menos de 2 minutos para receber sua primeira análise.</p>
-            <a href="{{ route('register') }}" class="inline-flex mt-6 text-sm font-semibold text-brand bg-white hover:bg-gray-100 rounded-lg px-5 py-3 transition">
+            <a href="{{ route('register') }}" class="inline-flex mt-6 text-sm font-semibold text-brand bg-white hover:bg-gray-100 rounded-lg px-5 py-3 transition focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-brand">
                 Criar minha conta grátis
             </a>
         </div>

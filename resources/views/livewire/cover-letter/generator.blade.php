@@ -5,9 +5,7 @@
     <p class="text-sm text-gray-500 mt-1">Gerada a partir do seu currículo e da descrição da vaga.</p>
 
     @error('ai')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">
-            {{ $message }}
-        </div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
 
     <div class="grid grid-cols-1 sm:grid-cols-[280px_1fr] gap-5 mt-6">

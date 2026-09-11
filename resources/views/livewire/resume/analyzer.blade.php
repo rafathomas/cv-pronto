@@ -16,9 +16,7 @@
     </div>
 
     @error('ai')
-        <div class="mb-6 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">
-            {{ $message }}
-        </div>
+        <x-alert class="mb-6">{{ $message }}</x-alert>
     @enderror
 
     @if (! $analysis)

@@ -62,7 +62,7 @@
             {{-- Nota + atividade recente --}}
             <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6">
 
-                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                <x-card>
                     <h3 class="font-semibold text-gray-900 mb-4">Nota do currículo</h3>
 
                     @if (! $resume)
@@ -102,9 +102,9 @@
                         </div>
                         <a href="{{ route('resume.analyze', $resume) }}" wire:navigate class="inline-flex mt-5 text-sm font-semibold text-accent-dark hover:underline">Ver análise completa →</a>
                     @endif
-                </div>
+                </x-card>
 
-                <div class="bg-white border border-gray-200 rounded-xl p-6">
+                <x-card>
                     <h3 class="font-semibold text-gray-900 mb-4">Histórico recente</h3>
 
                     @if ($activity->isEmpty())
@@ -136,7 +136,7 @@
                             @endforeach
                         </ul>
                     @endif
-                </div>
+                </x-card>
 
             </div>
 

@@ -29,10 +29,10 @@
     </div>
 
     @error('template')
-        <div class="flex items-center justify-between gap-3 mb-4 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+        <x-alert class="flex items-center justify-between gap-3 mb-4">
             <span>{{ $message }}</span>
             <a href="{{ route('billing.plans') }}" class="shrink-0 font-semibold text-amber-900 hover:underline">Ver planos</a>
-        </div>
+        </x-alert>
     @enderror
 
     {{-- Miniaturas dos templates --}}

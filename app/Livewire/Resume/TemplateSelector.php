@@ -2,30 +2,15 @@
 
 namespace App\Livewire\Resume;
 
+use App\Domain\Resume\Enums\AccentColor;
 use App\Domain\Resume\Enums\ResumeTemplate;
 use App\Domain\Resume\Models\Resume;
-use App\Domain\Subscription\Services\SubscriptionService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class TemplateSelector extends Component
 {
-    /**
-     * Paleta de cores de destaque disponíveis para qualquer template.
-     *
-     * @var array<string, string>
-     */
-    public const ACCENT_COLORS = [
-        'Cinza' => '#64748B',
-        'Vermelho' => '#DC2626',
-        'Laranja' => '#EA580C',
-        'Amarelo' => '#CA8A04',
-        'Verde' => '#16A34A',
-        'Turquesa' => '#0D9488',
-        'Azul' => '#2563EB',
-        'Roxo' => '#7C3AED',
-    ];
-
     public Resume $resume;
 
     public string $selectedTemplate;
@@ -37,7 +22,7 @@ class TemplateSelector extends Component
         $this->authorize('view', $resume);
         $this->resume = $resume;
         $this->selectedTemplate = $resume->template;
-        $this->selectedColor = $resume->accent_color ?: '#16A34A';
+        $this->selectedColor = $resume->accent_color ?: AccentColor::DEFAULT;
     }
 
     public function selectTemplate(string $template): void
@@ -50,7 +35,7 @@ class TemplateSelector extends Component
             return;
         }
 
-        if ($resumeTemplate->isPremium() && ! $this->hasPremiumTemplates()) {
+        if (Gate::denies('use-premium-template', $resumeTemplate)) {
             $this->addError('template', 'Este template é exclusivo dos planos Pro e Premium. Faça upgrade para usá-lo.');
 
             return;
@@ -62,14 +47,14 @@ class TemplateSelector extends Component
 
     public function hasPremiumTemplates(): bool
     {
-        return app(SubscriptionService::class)->currentPlan(Auth::user())->hasFeature('premium_templates');
+        return Gate::forUser(Auth::user())->allows('access-premium-templates');
     }
 
     public function selectColor(string $color): void
     {
         $this->authorize('update', $this->resume);
 
-        if (! in_array($color, self::ACCENT_COLORS, true)) {
+        if (! in_array($color, AccentColor::PALETTE, true)) {
             return;
         }
 
@@ -81,7 +66,7 @@ class TemplateSelector extends Component
     {
         return view('livewire.resume.template-selector', [
             'templates' => ResumeTemplate::cases(),
-            'accentColors' => self::ACCENT_COLORS,
+            'accentColors' => AccentColor::PALETTE,
             'hasPremiumTemplates' => $this->hasPremiumTemplates(),
         ])->layout('layouts.app');
     }

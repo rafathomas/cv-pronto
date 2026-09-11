@@ -5,10 +5,10 @@
     <p class="text-sm text-gray-500 mt-1">Envie seu arquivo e a IA preenche os campos automaticamente. Nada é inventado — o que não estiver no arquivo fica em branco para você completar. Você poderá revisar tudo antes de salvar.</p>
 
     @error('ai')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">{{ $message }}</div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
     @error('file')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">{{ $message }}</div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
 
     @if (! $extracted)

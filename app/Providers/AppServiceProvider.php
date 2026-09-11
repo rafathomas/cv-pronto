@@ -8,7 +8,9 @@ use App\Domain\AI\Providers\OpenAiProvider;
 use App\Domain\Job\Models\JobDescription;
 use App\Domain\Payment\Contracts\PaymentGatewayInterface;
 use App\Domain\Payment\Gateways\MercadoPagoGateway;
+use App\Domain\Resume\Enums\ResumeTemplate;
 use App\Domain\Resume\Models\Resume;
+use App\Domain\Subscription\Services\SubscriptionService;
 use App\Models\User;
 use App\Policies\JobDescriptionPolicy;
 use App\Policies\ResumePolicy;
@@ -53,6 +55,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(JobDescription::class, JobDescriptionPolicy::class);
 
         Gate::define('admin', fn (User $user) => $user->is_admin);
+
+        Gate::define('access-premium-templates', fn (User $user) => $this->app->make(SubscriptionService::class)
+            ->currentPlan($user)
+            ->hasFeature('premium_templates'));
+
+        Gate::define('use-premium-template', fn (User $user, ResumeTemplate $template) => ! $template->isPremium() || Gate::forUser($user)->allows('access-premium-templates'));
 
         RateLimiter::for('ai', fn (Request $request) => Limit::perMinute(30)->by($request->user()?->id ?: $request->ip()));
 

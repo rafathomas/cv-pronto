@@ -12,6 +12,7 @@ use App\Domain\Resume\DTOs\ExperienceData;
 use App\Domain\Resume\DTOs\ResumePersonalData;
 use App\Domain\Resume\Enums\LanguageLevel;
 use App\Domain\Resume\Models\Resume;
+use App\Domain\Resume\Rules\ResumeValidationRules;
 use App\Domain\Resume\Models\ResumeCourse;
 use App\Domain\Resume\Models\ResumeEducation;
 use App\Domain\Resume\Models\ResumeExperience;
@@ -190,16 +191,7 @@ class Builder extends Component
 
     public function savePersonalData(ResumeService $service): void
     {
-        $this->validate([
-            'fullName' => 'required|string|max:150',
-            'email' => 'nullable|email|max:150',
-            'phone' => 'nullable|string|max:30',
-            'city' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:2',
-            'linkedinUrl' => 'nullable|url|max:255',
-            'githubUrl' => 'nullable|url|max:255',
-            'portfolioUrl' => 'nullable|url|max:255',
-        ]);
+        $this->validate(ResumeValidationRules::personalData());
 
         $service->updatePersonalData($this->resume, new ResumePersonalData(
             fullName: $this->fullName,
@@ -217,7 +209,7 @@ class Builder extends Component
 
     public function saveSummary(ResumeService $service): void
     {
-        $this->validate(['professionalSummary' => 'nullable|string|max:1200']);
+        $this->validate(ResumeValidationRules::professionalSummary());
 
         $service->updateProfessionalSummary($this->resume, $this->professionalSummary ?? '');
 

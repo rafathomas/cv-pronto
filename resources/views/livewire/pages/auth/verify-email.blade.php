@@ -44,9 +44,9 @@ new #[Layout('layouts.guest')] class extends Component
     </div>
 
     @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-accent-dark bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+        <x-alert type="success" class="mb-4 font-medium">
             Um novo link de confirmação foi enviado para o e-mail que você cadastrou.
-        </div>
+        </x-alert>
     @endif
 
     <div class="flex items-center justify-between gap-4">

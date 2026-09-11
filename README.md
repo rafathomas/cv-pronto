@@ -15,16 +15,16 @@ Plataforma self-service de criação, análise e otimização de currículos com
 
 ## Como rodar localmente
 
-### Com Docker
+### Com Docker (Laravel Sail)
 
 ```bash
 cp .env.example .env
-docker compose up -d --build
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate --seed
+./vendor/bin/sail up -d --build
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate --seed
 ```
 
-Acesse em `http://localhost:8000`.
+Acesse em `http://localhost:8000`. O serviço da aplicação se chama `laravel.test` (padrão do Sail) — use `sail artisan`/`sail composer`/`sail npm` em vez de `docker compose exec app ...`.
 
 ### Sem Docker
 

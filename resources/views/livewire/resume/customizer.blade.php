@@ -5,9 +5,7 @@
     <p class="text-sm text-gray-500 mt-1">A IA reorganiza e melhora a apresentação do que você já tem — sem inventar experiência, habilidades ou empresas.</p>
 
     @error('ai')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">
-            {{ $message }}
-        </div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
 
     @if (! $customized)

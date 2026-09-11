@@ -5,12 +5,12 @@
     <p class="text-sm text-gray-500 mt-1">Seu plano atual: <strong>{{ $currentPlan->name }}</strong></p>
 
     @error('billing')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">{{ $message }}</div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-6">
         @foreach ($plans as $plan)
-            <div class="bg-white border-2 rounded-xl p-6 flex flex-col gap-4 {{ $plan->id === $currentPlan->id ? 'border-accent' : 'border-gray-200' }}">
+            <x-card class="flex flex-col gap-4 !border-2 {{ $plan->id === $currentPlan->id ? '!border-accent' : '!border-gray-200' }}">
                 <div>
                     <span class="text-xs font-bold uppercase tracking-wide text-gray-400">{{ $plan->name }}</span>
                     <p class="text-2xl font-bold text-gray-900 mt-1">
@@ -34,12 +34,11 @@
                 @elseif ($plan->price_cents === 0)
                     <span class="text-center text-sm font-semibold text-gray-400 bg-gray-50 rounded-lg px-4 py-2.5">Gratuito</span>
                 @else
-                    <button type="button" wire:click="subscribe({{ $plan->id }})" wire:loading.attr="disabled" wire:target="subscribe({{ $plan->id }})"
-                        class="text-sm font-semibold text-white bg-accent hover:bg-accent-dark disabled:opacity-60 rounded-lg px-4 py-2.5 transition">
+                    <x-primary-button type="button" wire:click="subscribe({{ $plan->id }})" wire:loading.attr="disabled" wire:target="subscribe({{ $plan->id }})" class="w-full">
                         Assinar {{ $plan->name }}
-                    </button>
+                    </x-primary-button>
                 @endif
-            </div>
+            </x-card>
         @endforeach
     </div>
 

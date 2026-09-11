@@ -6,9 +6,9 @@ use App\Domain\Subscription\Enums\SubscriptionStatus;
 use App\Domain\Subscription\Models\Plan;
 use App\Domain\Subscription\Services\SubscriptionService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateUserPlanRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class AdminSubscriptionController extends Controller
@@ -33,13 +33,9 @@ class AdminSubscriptionController extends Controller
         ]);
     }
 
-    public function update(Request $request, User $user, SubscriptionService $service): RedirectResponse
+    public function update(UpdateUserPlanRequest $request, User $user, SubscriptionService $service): RedirectResponse
     {
-        $validated = $request->validate([
-            'plan_id' => ['required', 'exists:plans,id'],
-        ]);
-
-        $plan = Plan::findOrFail($validated['plan_id']);
+        $plan = Plan::findOrFail($request->validated('plan_id'));
 
         $service->adminAssignPlan($user, $plan);
 

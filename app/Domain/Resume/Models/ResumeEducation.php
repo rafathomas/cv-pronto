@@ -12,6 +12,8 @@ class ResumeEducation extends Model
 
     protected $table = 'resume_education';
 
+    protected $touches = ['resume'];
+
     protected $fillable = [
         'resume_id',
         'institution',

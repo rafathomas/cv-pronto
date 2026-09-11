@@ -10,6 +10,8 @@ class ResumeCourse extends Model
 {
     use HasFactory;
 
+    protected $touches = ['resume'];
+
     protected $fillable = [
         'resume_id',
         'name',

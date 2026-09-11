@@ -5,9 +5,7 @@
     <p class="text-sm text-gray-500 mt-1">Cole a descrição da vaga abaixo. A IA compara com seu currículo atual e mostra o quanto vocês combinam.</p>
 
     @error('ai')
-        <div class="mt-4 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm px-4 py-3">
-            {{ $message }}
-        </div>
+        <x-alert class="mt-4">{{ $message }}</x-alert>
     @enderror
 
     <div class="bg-white border border-gray-200 rounded-xl p-6 mt-6">
